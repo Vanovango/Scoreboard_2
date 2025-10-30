@@ -1,0 +1,51 @@
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+
+class Ui_VisitWindow(object):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(518, 472)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.centralwidget.setObjectName("centralwidget")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.label = QtWidgets.QLabel(self.centralwidget)
+        self.label.setObjectName("label")
+        self.verticalLayout.addWidget(self.label)
+        self.pushButton_new_scoreboard = QtWidgets.QPushButton(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(15)
+        self.pushButton_new_scoreboard.setFont(font)
+        self.pushButton_new_scoreboard.setObjectName("pushButton_new_scoreboard")
+        self.verticalLayout.addWidget(self.pushButton_new_scoreboard)
+        self.pushButton_close_all_scoreboards = QtWidgets.QPushButton(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(15)
+        self.pushButton_close_all_scoreboards.setFont(font)
+        self.pushButton_close_all_scoreboards.setObjectName("pushButton_close_all_scoreboards")
+        self.verticalLayout.addWidget(self.pushButton_close_all_scoreboards)
+        self.pushButton_members_list = QtWidgets.QPushButton(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(15)
+        self.pushButton_members_list.setFont(font)
+        self.pushButton_members_list.setObjectName("pushButton_members_list")
+        self.verticalLayout.addWidget(self.pushButton_members_list)
+        self.pushButton_close_app = QtWidgets.QPushButton(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(15)
+        self.pushButton_close_app.setFont(font)
+        self.pushButton_close_app.setObjectName("pushButton_close_app")
+        self.verticalLayout.addWidget(self.pushButton_close_app)
+        MainWindow.setCentralWidget(self.centralwidget)
+
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def retranslateUi(self, MainWindow):
+        _translate = QtCore.QCoreApplication.translate
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.label.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt;\">Табло </span></p><p align=\"center\"><span style=\" font-size:18pt;\">для соревнований</span></p><p align=\"center\"><span style=\" font-size:18pt;\">по дзюдо</span></p></body></html>"))
+        self.pushButton_new_scoreboard.setText(_translate("MainWindow", "Новое табло"))
+        self.pushButton_close_all_scoreboards.setText(_translate("MainWindow", "Закрыть все табло"))
+        self.pushButton_members_list.setText(_translate("MainWindow", "Список участников"))
+        self.pushButton_close_app.setText(_translate("MainWindow", "Закрыть программу"))

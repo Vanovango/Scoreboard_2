@@ -1,0 +1,382 @@
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QFont
+from PyQt5.QtWidgets import (QMainWindow, QPushButton, QLabel, QVBoxLayout, QWidget,
+                             QTimeEdit, QDialog, QMessageBox, QHBoxLayout)
+from PyQt5.QtCore import QTimer, QTime, Qt
+
+class Ui_ManegePanel(object):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(1163, 662)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.centralwidget.setObjectName("centralwidget")
+        self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
+        self.gridLayout.setObjectName("gridLayout")
+        self.label_shido_score_1 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(24)
+        self.label_shido_score_1.setFont(font)
+        self.label_shido_score_1.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_shido_score_1.setObjectName("label_shido_score_1")
+        self.gridLayout.addWidget(self.label_shido_score_1, 8, 1, 1, 1)
+        self.label_vazari_score_1 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(24)
+        self.label_vazari_score_1.setFont(font)
+        self.label_vazari_score_1.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_vazari_score_1.setObjectName("label_vazari_score_1")
+        self.gridLayout.addWidget(self.label_vazari_score_1, 6, 1, 1, 1)
+        self.label_total_time_name = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(2)
+        self.label_total_time_name.setFont(font)
+        self.label_total_time_name.setObjectName("label_total_time_name")
+        self.gridLayout.addWidget(self.label_total_time_name, 4, 2, 1, 2)
+        self.label_ippon_score_1 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(24)
+        self.label_ippon_score_1.setFont(font)
+        self.label_ippon_score_1.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_ippon_score_1.setObjectName("label_ippon_score_1")
+        self.gridLayout.addWidget(self.label_ippon_score_1, 7, 1, 1, 1)
+        self.pushButton_vazari_2 = QtWidgets.QPushButton(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.pushButton_vazari_2.setFont(font)
+        self.pushButton_vazari_2.setObjectName("pushButton_vazari_2")
+        self.gridLayout.addWidget(self.pushButton_vazari_2, 6, 5, 1, 1)
+        self.pushButton_yko_2 = QtWidgets.QPushButton(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.pushButton_yko_2.setFont(font)
+        self.pushButton_yko_2.setObjectName("pushButton_yko_2")
+        self.gridLayout.addWidget(self.pushButton_yko_2, 5, 5, 1, 1)
+        self.pushButton_ippon_1 = QtWidgets.QPushButton(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.pushButton_ippon_1.setFont(font)
+        self.pushButton_ippon_1.setObjectName("pushButton_ippon_1")
+        self.gridLayout.addWidget(self.pushButton_ippon_1, 7, 0, 1, 1)
+        self.pushButton_ippon_2 = QtWidgets.QPushButton(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.pushButton_ippon_2.setFont(font)
+        self.pushButton_ippon_2.setObjectName("pushButton_ippon_2")
+        self.gridLayout.addWidget(self.pushButton_ippon_2, 7, 5, 1, 1)
+        self.label_total_time = QtWidgets.QLabel(self.centralwidget)
+        self.label_total_time.setObjectName("label_total_time")
+        self.gridLayout.addWidget(self.label_total_time, 5, 2, 3, 2)
+        self.label_vazari_score_2 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(24)
+        self.label_vazari_score_2.setFont(font)
+        self.label_vazari_score_2.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_vazari_score_2.setObjectName("label_vazari_score_2")
+        self.gridLayout.addWidget(self.label_vazari_score_2, 6, 4, 1, 1)
+        self.pushButton_shido_1 = QtWidgets.QPushButton(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.pushButton_shido_1.setFont(font)
+        self.pushButton_shido_1.setObjectName("pushButton_shido_1")
+        self.gridLayout.addWidget(self.pushButton_shido_1, 8, 0, 1, 1)
+        self.label_yko_score_1 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(24)
+        self.label_yko_score_1.setFont(font)
+        self.label_yko_score_1.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_yko_score_1.setObjectName("label_yko_score_1")
+        self.gridLayout.addWidget(self.label_yko_score_1, 5, 1, 1, 1)
+        self.pushButton_vazari_1 = QtWidgets.QPushButton(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.pushButton_vazari_1.setFont(font)
+        self.pushButton_vazari_1.setObjectName("pushButton_vazari_1")
+        self.gridLayout.addWidget(self.pushButton_vazari_1, 6, 0, 1, 1)
+        self.label_yko_score_2 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(24)
+        self.label_yko_score_2.setFont(font)
+        self.label_yko_score_2.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_yko_score_2.setObjectName("label_yko_score_2")
+        self.gridLayout.addWidget(self.label_yko_score_2, 5, 4, 1, 1)
+        self.label_ippon_score_2 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(24)
+        self.label_ippon_score_2.setFont(font)
+        self.label_ippon_score_2.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_ippon_score_2.setObjectName("label_ippon_score_2")
+        self.gridLayout.addWidget(self.label_ippon_score_2, 7, 4, 1, 1)
+        self.pushButton_yko_1 = QtWidgets.QPushButton(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.pushButton_yko_1.setFont(font)
+        self.pushButton_yko_1.setObjectName("pushButton_yko_1")
+        self.gridLayout.addWidget(self.pushButton_yko_1, 5, 0, 1, 1)
+        self.pushButton_total_time_stop = QtWidgets.QPushButton(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(16)
+        self.pushButton_total_time_stop.setFont(font)
+        self.pushButton_total_time_stop.setObjectName("pushButton_total_time_stop")
+        self.gridLayout.addWidget(self.pushButton_total_time_stop, 8, 3, 1, 1)
+        self.pushButton_hold_stop_1 = QtWidgets.QPushButton(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(16)
+        self.pushButton_hold_stop_1.setFont(font)
+        self.pushButton_hold_stop_1.setObjectName("pushButton_hold_stop_1")
+        self.gridLayout.addWidget(self.pushButton_hold_stop_1, 11, 1, 1, 1)
+        self.pushButton_chose_total_time = QtWidgets.QPushButton(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(16)
+        self.pushButton_chose_total_time.setFont(font)
+        self.pushButton_chose_total_time.setObjectName("pushButton_chose_total_time")
+        self.gridLayout.addWidget(self.pushButton_chose_total_time, 9, 2, 1, 2)
+        self.label_hold_2 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(18)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_hold_2.setFont(font)
+        self.label_hold_2.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_hold_2.setObjectName("label_hold_2")
+        self.gridLayout.addWidget(self.label_hold_2, 9, 4, 1, 2)
+        self.pushButton_hold_start_2 = QtWidgets.QPushButton(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(16)
+        self.pushButton_hold_start_2.setFont(font)
+        self.pushButton_hold_start_2.setObjectName("pushButton_hold_start_2")
+        self.gridLayout.addWidget(self.pushButton_hold_start_2, 11, 4, 1, 1)
+        self.pushButton_shido_2 = QtWidgets.QPushButton(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.pushButton_shido_2.setFont(font)
+        self.pushButton_shido_2.setObjectName("pushButton_shido_2")
+        self.gridLayout.addWidget(self.pushButton_shido_2, 8, 5, 1, 1)
+        self.label_hold_time_2 = QtWidgets.QLabel(self.centralwidget)
+        self.label_hold_time_2.setObjectName("label_hold_time_2")
+        self.gridLayout.addWidget(self.label_hold_time_2, 10, 4, 1, 2)
+        self.pushButton_total_time_start = QtWidgets.QPushButton(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(16)
+        self.pushButton_total_time_start.setFont(font)
+        self.pushButton_total_time_start.setObjectName("pushButton_total_time_start")
+        self.gridLayout.addWidget(self.pushButton_total_time_start, 8, 2, 1, 1)
+        self.label_shido_score_2 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(24)
+        self.label_shido_score_2.setFont(font)
+        self.label_shido_score_2.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_shido_score_2.setObjectName("label_shido_score_2")
+        self.gridLayout.addWidget(self.label_shido_score_2, 8, 4, 1, 1)
+        self.label_hold_time_1 = QtWidgets.QLabel(self.centralwidget)
+        self.label_hold_time_1.setObjectName("label_hold_time_1")
+        self.gridLayout.addWidget(self.label_hold_time_1, 10, 0, 1, 2)
+        self.pushButton_hold_stop_2 = QtWidgets.QPushButton(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(16)
+        self.pushButton_hold_stop_2.setFont(font)
+        self.pushButton_hold_stop_2.setObjectName("pushButton_hold_stop_2")
+        self.gridLayout.addWidget(self.pushButton_hold_stop_2, 11, 5, 1, 1)
+        self.label_hold_1 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(18)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_hold_1.setFont(font)
+        self.label_hold_1.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_hold_1.setObjectName("label_hold_1")
+        self.gridLayout.addWidget(self.label_hold_1, 9, 0, 1, 2)
+        self.pushButton_hold_start_1 = QtWidgets.QPushButton(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(16)
+        self.pushButton_hold_start_1.setFont(font)
+        self.pushButton_hold_start_1.setObjectName("pushButton_hold_start_1")
+        self.gridLayout.addWidget(self.pushButton_hold_start_1, 11, 0, 1, 1)
+        self.label_weight_category = QtWidgets.QLabel(self.centralwidget)
+        self.label_weight_category.setObjectName("label_weight_category")
+        self.gridLayout.addWidget(self.label_weight_category, 0, 2, 2, 2)
+        self.comboBox_member_2 = QtWidgets.QComboBox(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(18)
+        font.setBold(False)
+        font.setWeight(50)
+        self.comboBox_member_2.setFont(font)
+        self.comboBox_member_2.setObjectName("comboBox_member_2")
+        self.comboBox_member_2.addItem("")
+        self.comboBox_member_2.addItem("")
+        self.gridLayout.addWidget(self.comboBox_member_2, 0, 4, 3, 2)
+        self.comboBox_member_1 = QtWidgets.QComboBox(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(18)
+        font.setBold(False)
+        font.setWeight(50)
+        self.comboBox_member_1.setFont(font)
+        self.comboBox_member_1.setObjectName("comboBox_member_1")
+        self.comboBox_member_1.addItem("")
+        self.comboBox_member_1.addItem("")
+        self.gridLayout.addWidget(self.comboBox_member_1, 0, 0, 3, 2)
+        self.label_total_score_1 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(2)
+        self.label_total_score_1.setFont(font)
+        self.label_total_score_1.setObjectName("label_total_score_1")
+        self.gridLayout.addWidget(self.label_total_score_1, 3, 0, 2, 2)
+        self.label_total_score_2 = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(2)
+        self.label_total_score_2.setFont(font)
+        self.label_total_score_2.setObjectName("label_total_score_2")
+        self.gridLayout.addWidget(self.label_total_score_2, 3, 4, 2, 2)
+        self.comboBox_weight_category = QtWidgets.QComboBox(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.comboBox_weight_category.setFont(font)
+        self.comboBox_weight_category.setLayoutDirection(QtCore.Qt.RightToLeft)
+        self.comboBox_weight_category.setAutoFillBackground(False)
+        self.comboBox_weight_category.setObjectName("comboBox_weight_category")
+        self.comboBox_weight_category.addItem("")
+        self.comboBox_weight_category.addItem("")
+        self.comboBox_weight_category.addItem("")
+        self.gridLayout.addWidget(self.comboBox_weight_category, 2, 2, 2, 2)
+        MainWindow.setCentralWidget(self.centralwidget)
+
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+        # ⁡⁢⁣⁣​‌‌‍my code part ​⁡
+        self.functions(MainWindow)
+
+        # ⁡⁢⁣⁣​‌‌‍change punish buttons ​⁡
+        self.pushButton_shido_1.setMouseTracking(True)
+        self.pushButton_shido_1.mousePressEvent = \
+            lambda event, name=self.label_shido_score_1, side='left': self.check_button_event(event, name, side)
+
+        self.pushButton_shido_2.setMouseTracking(True)
+        self.pushButton_shido_2.mousePressEvent = \
+            lambda event, name=self.label_shido_score_2, side='right': self.check_button_event(event, name, side)
+
+        # ⁡⁢⁣⁣​‌‌‍change score buttons​⁡
+        # ⁡⁣⁢⁣​‌‍‌left side ​⁡
+        self.pushButton_yko_1.setMouseTracking(True)
+        self.pushButton_yko_1.mousePressEvent = \
+            lambda event, name=self.label_yko_score_1, side='left': self.check_button_event(event, name, side)
+
+        self.pushButton_vazari_1.setMouseTracking(True)
+        self.pushButton_vazari_1.mousePressEvent = \
+            lambda event, name=self.label_vazari_score_1, side='left': self.check_button_event(event, name, side)
+
+        self.pushButton_ippon_1.setMouseTracking(True)
+        self.pushButton_ippon_1.mousePressEvent = \
+            lambda event, name=self.label_ippon_score_1, side='left': self.check_button_event(event, name, side)
+
+        # ⁡⁣⁢⁣​‌‍‌right side ​⁡
+        self.pushButton_yko_2.setMouseTracking(True)
+        self.pushButton_yko_2.mousePressEvent =\
+            lambda event, name=self.label_yko_score_2, side='right': self.check_button_event(event, name, side)
+
+        self.pushButton_vazari_2.setMouseTracking(True)
+        self.pushButton_vazari_2.mousePressEvent = \
+            lambda event, name=self.label_vazari_score_2, side='right': self.check_button_event(event, name, side)
+
+        self.pushButton_ippon_2.setMouseTracking(True)
+        self.pushButton_ippon_2.mousePressEvent = \
+            lambda event, name=self.label_ippon_score_2, side='right': self.check_button_event(event, name, side)
+
+
+
+    def retranslateUi(self, MainWindow):
+        _translate = QtCore.QCoreApplication.translate
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.label_shido_score_1.setText(_translate("MainWindow", "0"))
+        self.label_vazari_score_1.setText(_translate("MainWindow", "0"))
+        self.label_total_time_name.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:28pt; font-weight:600;\">ВРЕМЯ</span></p></body></html>"))
+        self.label_ippon_score_1.setText(_translate("MainWindow", "0"))
+        self.pushButton_vazari_2.setText(_translate("MainWindow", "ВАЗАРИ"))
+        self.pushButton_yko_2.setText(_translate("MainWindow", "ЮКО"))
+        self.pushButton_ippon_1.setText(_translate("MainWindow", "ИППОН"))
+        self.pushButton_ippon_2.setText(_translate("MainWindow", "ИППОН"))
+        self.label_total_time.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:48pt; font-weight:600;\">02:35</span></p></body></html>"))
+        self.label_vazari_score_2.setText(_translate("MainWindow", "0"))
+        self.pushButton_shido_1.setText(_translate("MainWindow", "ШИДО"))
+        self.label_yko_score_1.setText(_translate("MainWindow", "0"))
+        self.pushButton_vazari_1.setText(_translate("MainWindow", "ВАЗАРИ"))
+        self.label_yko_score_2.setText(_translate("MainWindow", "0"))
+        self.label_ippon_score_2.setText(_translate("MainWindow", "0"))
+        self.pushButton_yko_1.setText(_translate("MainWindow", "ЮКО"))
+        self.pushButton_total_time_stop.setText(_translate("MainWindow", "Стоп"))
+        self.pushButton_hold_stop_1.setText(_translate("MainWindow", "Стоп"))
+        self.pushButton_chose_total_time.setText(_translate("MainWindow", "Выбрать время"))
+        self.label_hold_2.setText(_translate("MainWindow", "УДЕРЖАНИЕ"))
+        self.pushButton_hold_start_2.setText(_translate("MainWindow", "Старт"))
+        self.pushButton_shido_2.setText(_translate("MainWindow", "ШИДО"))
+        self.label_hold_time_2.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:24pt; font-weight:600;\">0.0</span></p></body></html>"))
+        self.pushButton_total_time_start.setText(_translate("MainWindow", "Старт"))
+        self.label_shido_score_2.setText(_translate("MainWindow", "0"))
+        self.label_hold_time_1.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:24pt; font-weight:600;\">0.0</span></p></body></html>"))
+        self.pushButton_hold_stop_2.setText(_translate("MainWindow", "Стоп"))
+        self.label_hold_1.setText(_translate("MainWindow", "УДЕРЖАНИЕ"))
+        self.pushButton_hold_start_1.setText(_translate("MainWindow", "Старт"))
+        self.label_weight_category.setWhatsThis(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:12pt;\">весовая категория</span></p><p align=\"center\"><span style=\" font-size:12pt;\">23 кг</span></p><p><br/></p></body></html>"))
+        self.label_weight_category.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:16pt; font-weight:600;\">Весовая категория</span></p></body></html>"))
+        self.comboBox_member_2.setItemText(0, _translate("MainWindow", "Божевальников Г."))
+        self.comboBox_member_2.setItemText(1, _translate("MainWindow", "Абдулкадыров И."))
+        self.comboBox_member_1.setItemText(0, _translate("MainWindow", "Божевальников Г."))
+        self.comboBox_member_1.setItemText(1, _translate("MainWindow", "Абдулкадыров И."))
+        self.label_total_score_1.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:48pt;\">100</span></p></body></html>"))
+        self.label_total_score_2.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:48pt;\">50</span></p></body></html>"))
+        self.comboBox_weight_category.setItemText(0, _translate("MainWindow", "23"))
+        self.comboBox_weight_category.setItemText(1, _translate("MainWindow", "26"))
+        self.comboBox_weight_category.setItemText(2, _translate("MainWindow", "28"))
+
+
+    def functions(self, MainWindow):
+        pass
+        
+    def check_button_event(self, event, name, side):
+        if event.button() == Qt.LeftButton:
+            self.plus_one_score(name, side)
+        elif event.button() == Qt.RightButton:
+            self.minus_one_score(name, side)
+
+
+    def minus_one_score(self, name, side):
+        text = int(name.text()) - 1
+        name.setText(str(text))
+
+        self.update_score(side)
+
+        self.update_scoreboard()
+
+
+    def plus_one_score(self, name, side):
+        text = int(name.text()) + 1
+        name.setText(str(text))
+
+        self.update_score(side)
+
+        self.update_scoreboard()
+
+
+    ##################### score counter ############################
+    def update_score(self, side):
+        if side == 'left':
+            score = (int(self.label_yko_score_1.text()) +
+                     10 * int(self.label_vazari_score_1.text()) +
+                     100 * int(self.label_ippon_score_1.text()))
+            self.label_total_score_1.setText(str(score))
+
+        elif side == 'right':
+            score = (int(self.label_yko_score_2.text()) +
+                     10 * int(self.label_vazari_score_2.text()) +
+                     100 * int(self.label_ippon_score_2.text()))
+            self.label_total_score_2.setText(str(score))
+
+        self.update_scoreboard()
+
+
+    def update_scoreboard(self):
+        pass
+
+
+    def save_and_reset(self, MainWindow):
+        pass
+        self.retranslateUi(MainWindow)
