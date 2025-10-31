@@ -145,9 +145,9 @@ class Ui_Scoreboard(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label_member_2.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:28pt; font-weight:600;\">АБДУЛКАДЫРОВ И.</span></p><p align=\"center\"><span style=\" font-size:16pt; font-weight:600;\">ТЕХНОЛИЦЕЙ ИМ. В.И. ДОЛГИХ</span></p></body></html>"))
-        self.label_score_2.setText(_translate("MainWindow", "<html><head/><body><p align=\"right\"><span style=\" font-size:72pt;\">50</span></p></body></html>"))
-        self.label_total_time.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:72pt;\">02:35</span></p></body></html>"))
+        self.label_score_2.setText(_translate("MainWindow", "<html><head/><body><p align=\"right\"><span style=\" font-size:72pt;\">0</span></p></body></html>"))
+        self.label_total_time.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:72pt;\">00:00</span></p></body></html>"))
         self.label_weight_category.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:72pt;\">23 кг</span></p><p><span style=\" font-size:18pt;\">ВЕСОВАЯ КАТЕГОРИЯ</span></p></body></html>"))
-        self.label_hold_time.setText(_translate("MainWindow", "<html><head/><body><p align=\"right\"><span style=\" font-size:72pt;\">10.0</span></p><p align=\"right\"><span style=\" font-size:24pt;\">УДЕРЖАНИЕ</span></p></body></html>"))
+        self.label_hold_time.setText(_translate("MainWindow", "<html><head/><body><p align=\"right\"><span style=\" font-size:72pt;\">0.0</span></p><p align=\"right\"><span style=\" font-size:24pt;\">УДЕРЖАНИЕ</span></p></body></html>"))
         self.label_member_1.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:28pt; font-weight:600; color:#0800ff;\">БОЖЕВАЛЬНИКОВ Г.</span></p><p align=\"center\"><span style=\" font-size:16pt; font-weight:600;\">ОДИНЦОВСКАЯ СОШ №3</span></p><p align=\"center\"><span style=\" font-size:36pt; font-weight:600; color:#ffea00;\">ПОБЕДА!</span></p></body></html>"))
-        self.label_score_1.setText(_translate("MainWindow", "<html><head/><body><p align=\"right\"><span style=\" font-size:72pt;\">100</span></p></body></html>"))
+        self.label_score_1.setText(_translate("MainWindow", "<html><head/><body><p align=\"right\"><span style=\" font-size:72pt;\">0</span></p></body></html>"))

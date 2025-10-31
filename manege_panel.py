@@ -441,7 +441,7 @@ class Ui_ManegePanel(object):
         self.comboBox_member_1.setItemText(0, _translate("MainWindow", "БОЖЕВАЛЬНИКОВ Г."))
         self.comboBox_member_1.setItemText(1, _translate("MainWindow", "АБДУЛКАДЫРОВ И."))
         self.comboBox_organization_1.setText(_translate("MainWindow", "Одинцовская СОШ №3"))
-        self.label_total_score_1.setText(_translate("MainWindow", "100"))
+        self.label_total_score_1.setText(_translate("MainWindow", "0"))
         self.label_weight_category.setText(_translate("MainWindow", "Весовая категория"))
         self.comboBox_weight_category.setItemText(0, _translate("MainWindow", "23"))
         self.comboBox_weight_category.setItemText(1, _translate("MainWindow", "25"))
@@ -459,7 +459,7 @@ class Ui_ManegePanel(object):
         self.comboBox_member_2.setItemText(0, _translate("MainWindow", "БОЖЕВАЛЬНИКОВ Г."))
         self.comboBox_member_2.setItemText(1, _translate("MainWindow", "АБДУЛКАДЫРОВ И."))
         self.comboBox_organization_2.setText(_translate("MainWindow", "Технолицей им. В.И. Долгих"))
-        self.label_total_score_2.setText(_translate("MainWindow", "100"))
+        self.label_total_score_2.setText(_translate("MainWindow", "0"))
         self.label_yko_score_2.setText(_translate("MainWindow", "0"))
         self.pushButton_yko_2.setText(_translate("MainWindow", "ЮКО"))
         self.label_vazari_score_2.setText(_translate("MainWindow", "0"))
@@ -514,7 +514,7 @@ class Ui_ManegePanel(object):
                      100 * int(self.label_ippon_score_2.text()))
             self.label_total_score_2.setText(str(score))
 
-        update_state(self.get_window_index())
+        update_scoreboard(self.get_window_index())
 
 
     def give_punish_card(self, name, member_num):
