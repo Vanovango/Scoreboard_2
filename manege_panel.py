@@ -4,6 +4,8 @@ from PyQt5.QtWidgets import (QMainWindow, QPushButton, QLabel, QVBoxLayout, QWid
                              QTimeEdit, QDialog, QMessageBox, QHBoxLayout)
 from PyQt5.QtCore import QTimer, QTime, Qt
 
+from config import *
+
 class Ui_ManegePanel(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -242,7 +244,8 @@ class Ui_ManegePanel(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-        # ⁡⁢⁣⁣​‌‌‍my code part ​⁡
+        # ​‌‌‌⁡⁢⁣⁣‍𝙢͟𝙮 𝙘͟𝙤͟𝙙͟𝙚 𝙥͟𝙖͟𝙧͟𝙩 ⁡​
+        
         self.functions(MainWindow)
 
         # ⁡⁢⁣⁣​‌‌‍change punish buttons ​⁡
@@ -342,18 +345,20 @@ class Ui_ManegePanel(object):
         text = int(name.text()) - 1
         name.setText(str(text))
 
-        self.update_score(side)
-
-        self.update_scoreboard()
+        if name in [self.label_shido_score_1, self.label_shido_score_2]:
+            self.give_punish_card(name, side)
+        else:
+            self.update_score(side)
 
 
     def plus_one_score(self, name, side):
         text = int(name.text()) + 1
         name.setText(str(text))
 
-        self.update_score(side)
-
-        self.update_scoreboard()
+        if name in [self.label_shido_score_1, self.label_shido_score_2]:
+            self.give_punish_card(name, side)
+        else:
+            self.update_score(side)
 
 
     ##################### score counter ############################
@@ -370,13 +375,65 @@ class Ui_ManegePanel(object):
                      100 * int(self.label_ippon_score_2.text()))
             self.label_total_score_2.setText(str(score))
 
-        self.update_scoreboard()
+        update_state(self.get_window_index())
 
 
-    def update_scoreboard(self):
-        pass
+    def give_punish_card(self, name, side):
+        index = self.get_window_index()
+        ui = SCOREBOARDS_LINKS[index]['scoreboard']['ui']
 
+        if side == 'left': # ​‌‌‌left side​
+            if name.text() == '0':
+                ui.label_yellow_card_1_1.setStyleSheet("background-color: rgb(255, 255, 255);")
+                ui.label_yellow_card_1_2.setStyleSheet("background-color: rgb(255, 255, 255);")
+                ui.label_red_card_1.setStyleSheet("background-color: rgb(255, 255, 255);")
 
-    def save_and_reset(self, MainWindow):
-        pass
-        self.retranslateUi(MainWindow)
+            elif name.text() == '1':
+                ui.label_yellow_card_1_1.setStyleSheet("background-color: rgb(255, 255, 0);")
+                ui.label_yellow_card_1_2.setStyleSheet("background-color: rgb(255, 255, 255);")
+                ui.label_red_card_1.setStyleSheet("background-color: rgb(255, 255, 255);")
+
+            elif name.text() == '2':
+                ui.label_yellow_card_1_1.setStyleSheet("background-color: rgb(255, 255, 0);")
+                ui.label_yellow_card_1_2.setStyleSheet("background-color: rgb(255, 255, 0);")
+                ui.label_red_card_1.setStyleSheet("background-color: rgb(255, 255, 255);")
+
+            elif name.text() == '3':
+                ui.label_yellow_card_1_1.setStyleSheet("background-color: rgb(255, 255, 0);")
+                ui.label_yellow_card_1_2.setStyleSheet("background-color: rgb(255, 255, 0);")
+                ui.label_red_card_1.setStyleSheet("background-color: rgb(255, 0, 0);")
+            
+        elif side == 'right': # ​‌‌‌right side​
+            if name.text() == '0':
+                ui.label_yellow_card_2_1.setStyleSheet("background-color: rgb(255, 255, 255);")
+                ui.label_yellow_card_2_2.setStyleSheet("background-color: rgb(255, 255, 255);")
+                ui.label_red_card_2.setStyleSheet("background-color: rgb(255, 255, 255);")
+
+            elif name.text() == '1':
+                ui.label_yellow_card_2_1.setStyleSheet("background-color: rgb(255, 255, 0);")
+                ui.label_yellow_card_2_2.setStyleSheet("background-color: rgb(255, 255, 255);")
+                ui.label_red_card_2.setStyleSheet("background-color: rgb(255, 255, 255);")
+
+            elif name.text() == '2':
+                ui.label_yellow_card_2_1.setStyleSheet("background-color: rgb(255, 255, 0);")
+                ui.label_yellow_card_2_2.setStyleSheet("background-color: rgb(255, 255, 0);")
+                ui.label_red_card_2.setStyleSheet("background-color: rgb(255, 255, 255);")
+
+            elif name.text() == '3':
+                ui.label_yellow_card_2_1.setStyleSheet("background-color: rgb(255, 255, 0);")
+                ui.label_yellow_card_2_2.setStyleSheet("background-color: rgb(255, 255, 0);")
+                ui.label_red_card_2.setStyleSheet("background-color: rgb(255, 0, 0);")
+
+        
+
+    def get_window_index(self) -> int:
+        """
+        return index of window where this function was called
+        """
+        memory_address = id(self)
+
+        for index in SCOREBOARDS_LINKS:
+            if SCOREBOARDS_LINKS[index]['maneger']['id'] == memory_address:
+                return index
+            
+       
