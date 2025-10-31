@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import (QMainWindow, QPushButton, QLabel, QVBoxLayout, QWid
                              QTimeEdit, QDialog, QMessageBox, QHBoxLayout)
 from PyQt5.QtCore import QTimer, QTime, Qt
 
-from config import *
+from config import SCOREBOARDS_LINKS, SCOREBOARDS_NUMBERS, Time, update_scoreboard
 
 class Ui_ManegePanel(object):
     def setupUi(self, MainWindow):
@@ -471,7 +471,8 @@ class Ui_ManegePanel(object):
 
 
     def functions(self, MainWindow):
-        pass
+        time = Time(id(MainWindow))
+        self.pushButton_chose_total_time.clicked.connect(time.set_time)
         
     def check_button_event(self, event, name, member_num):
         if event.button() == Qt.LeftButton:

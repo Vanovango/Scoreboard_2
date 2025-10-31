@@ -72,7 +72,7 @@ class Time:
     def start_totla_time(self, window, time):
             window.close()
 
-            total_timer_time = time
+            self.total_timer_time = time
             self.update_timer_display()
 
             if not self.TotalTimer.isActive():
@@ -92,6 +92,11 @@ class Time:
         update_scoreboard(self.window_id)
 
 
+    def update_timer_display(self):
+        SCOREBOARDS_LINKS[self.window_id]['maneger']['ui'].label_total_time.setText(self.total_timer_time.toString("mm:ss"))
+        SCOREBOARDS_LINKS[self.window_id]['scoreboard']['ui'].label_total_time.setText(self.total_timer_time.toString("mm:ss"))
+
+        update_scoreboard(self.window_id)
 
 def update_scoreboard(index: int) -> None:
     if index == 0:
@@ -101,6 +106,10 @@ def update_scoreboard(index: int) -> None:
         
         scoreboard = SCOREBOARDS_LINKS[index]['scoreboard']['ui']
         maneger = SCOREBOARDS_LINKS[index]['maneger']['ui']
+
+        # time
+        # maneger.label_total_time.setText(self.timer_time.toString("mm:ss"))
+        # scoreboard.label_total_time.setText(self.timer_time.toString("mm:ss"))
 
         # total score
         scoreboard.label_score_1.setText(maneger.label_total_score_1.text())
