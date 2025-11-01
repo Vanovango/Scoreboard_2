@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import (QMainWindow, QPushButton, QLabel, QVBoxLayout, QWid
                              QTimeEdit, QDialog, QMessageBox, QHBoxLayout)
 from PyQt5.QtCore import QTimer, QTime, Qt
 
-from config import SCOREBOARDS_LINKS, SCOREBOARDS_NUMBERS, Time, update_scoreboard
+from config import SCOREBOARDS_LINKS, SCOREBOARDS_NUMBERS, TotalTime, HoldTime, update_scoreboard
 
 class Ui_ManegePanel(object):
     def setupUi(self, MainWindow):
@@ -388,6 +388,7 @@ class Ui_ManegePanel(object):
 
         # ​‌‌‌⁡⁢⁣⁣‍𝙢͟𝙮 𝙘͟𝙤͟𝙙͟𝙚 𝙥͟𝙖͟𝙧͟𝙩 ⁡​
         
+
         self.functions(MainWindow)
 
         # ⁡⁢⁣⁣​‌‌‍change punish buttons ​⁡
@@ -471,8 +472,18 @@ class Ui_ManegePanel(object):
 
 
     def functions(self, MainWindow):
-        time = Time(id(MainWindow))
-        self.pushButton_chose_total_time.clicked.connect(time.set_time)
+        total_time = TotalTime()
+        hold_time = HoldTime()
+
+        # ​‌‌‍time functions    ​  
+        # total time
+        self.pushButton_chose_total_time.clicked.connect(lambda: total_time.set_time(self.get_window_index()))
+        self.pushButton_total_time_start.clicked.connect(lambda: total_time.TotalTimer.start())
+        self.pushButton_total_time_stop.clicked.connect(lambda: total_time.TotalTimer.stop())
+
+        # hold time
+        self.pushButton_hold_start.clicked.connect(lambda: hold_time.start_hold_timer(self.get_window_index()))
+        self.pushButton_hold_stop.clicked.connect(lambda: hold_time.stop_hold_time())
         
     def check_button_event(self, event, name, member_num):
         if event.button() == Qt.LeftButton:
@@ -604,8 +615,13 @@ class Ui_ManegePanel(object):
         """
         memory_address = id(self)
 
+        # # ​‌‍‌test prints​
+        # print(memory_address)
+        # print(SCOREBOARDS_LINKS)
+
         for index in SCOREBOARDS_LINKS:
             if SCOREBOARDS_LINKS[index]['maneger']['id'] == memory_address:
                 return index
+        return 0
             
        

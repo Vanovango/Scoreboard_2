@@ -30,16 +30,18 @@ SCOREBOARDS_NUMBERS = [0]
 
 
 # ⁡⁣⁢⁣​‌‌‌Time functions​⁡
-class Time:
-    def __init__(self, window_id):
-        self.window_id = window_id
+class TotalTime:
+    def __init__(self):
+        self.window_id = None
 
         # ⁡⁣⁢⁣​‌‌​‌‍‌⁡⁢⁢⁢‍Time variables⁡​
         self.TotalTimer = QTimer()
         self.TotalTimer.timeout.connect(lambda: self.update_timer())
         self.total_timer_time = QTime(0, 0)
-     
-    def set_time(self):
+        
+    def set_time(self, window_id):
+            self.window_id = window_id
+
             ChoseTime = QDialog()
             ChoseTime.setWindowTitle("Выберите время")
             ChoseTime.resize(260, 231)
@@ -66,37 +68,93 @@ class Time:
             pushButton_ok_time.clicked.connect(lambda: self.start_totla_time(ChoseTime, time_edit.time()))
 
             ChoseTime.exec_()
+            
+            self.update()
 
-            update_scoreboard(self.window_id)
 
     def start_totla_time(self, window, time):
             window.close()
 
             self.total_timer_time = time
-            self.update_timer_display()
+            self.update()
 
             if not self.TotalTimer.isActive():
                 self.TotalTimer.start(1000)  # Обновляем каждую секунду
 
             self.TotalTimer.stop()
 
-            update_scoreboard(self.window_id)
+            self.update()
+
 
     def update_timer(self):
         if self.total_timer_time == QTime(0, 0):
-            total_time.stop()
+            self.TotalTimer.stop()
             return
 
-        total_time = total_time.addSecs(-1)
+        self.total_timer_time = self.total_timer_time.addSecs(-1)
 
-        update_scoreboard(self.window_id)
+        self.update()
+    
 
-
-    def update_timer_display(self):
+    def update(self):
+        # total time
         SCOREBOARDS_LINKS[self.window_id]['maneger']['ui'].label_total_time.setText(self.total_timer_time.toString("mm:ss"))
         SCOREBOARDS_LINKS[self.window_id]['scoreboard']['ui'].label_total_time.setText(self.total_timer_time.toString("mm:ss"))
 
-        update_scoreboard(self.window_id)
+
+class HoldTime():
+    def __init__(self):
+        self.window_id = None
+
+        # Таймер
+        self.HoldTimer = QTimer()
+        self.HoldTimer.setInterval(100)  # Обновление каждые 100 мс (0.1 сек)
+        self.HoldTimer.timeout.connect(self.update_hold_time)  # Подключаем ОДИН раз
+
+        # Состояние
+        self.hold_time = 0.0
+        self.hold_flag = False
+
+    def start_hold_timer(self, window_id):
+        self.window_id = window_id
+        if not self.hold_flag:
+            self.hold_flag = True
+            self.HoldTimer.start()  # Запускаем таймер (если не запущен)
+
+    def update_hold_time(self):
+        if self.hold_flag:
+            self.hold_time += 0.1  # Увеличиваем на 0.1 сек
+
+            # Обновляем отображение
+            self.update(f"{self.hold_time:.1f}")
+
+    def stop_hold_time(self):
+        if self.hold_flag:
+            self.hold_flag = False
+            self.HoldTimer.stop()  # Останавливаем таймер
+            self.update(f"{self.hold_time:.1f}")
+        else:
+            # Сброс полностью
+            self.hold_time = 0.0
+            self.update("0.0")
+            self.hold_flag = False
+            self.HoldTimer.stop()
+
+            # Обновляем текст кнопки
+            if self.window_id in SCOREBOARDS_LINKS:
+                SCOREBOARDS_LINKS[self.window_id]['maneger']['ui'].pushButton_hold_stop.setText('Стоп')
+
+    def update(self, time: str):
+        if self.window_id not in SCOREBOARDS_LINKS:
+            return
+
+        maneger_ui = SCOREBOARDS_LINKS[self.window_id]['maneger']['ui']
+        scoreboard_ui = SCOREBOARDS_LINKS[self.window_id]['scoreboard']['ui']
+
+        maneger_ui.label_hold_time.setText(time)
+        scoreboard_ui.label_hold_time.setText(time)
+
+
 
 def update_scoreboard(index: int) -> None:
     if index == 0:
@@ -106,10 +164,6 @@ def update_scoreboard(index: int) -> None:
         
         scoreboard = SCOREBOARDS_LINKS[index]['scoreboard']['ui']
         maneger = SCOREBOARDS_LINKS[index]['maneger']['ui']
-
-        # time
-        # maneger.label_total_time.setText(self.timer_time.toString("mm:ss"))
-        # scoreboard.label_total_time.setText(self.timer_time.toString("mm:ss"))
 
         # total score
         scoreboard.label_score_1.setText(maneger.label_total_score_1.text())
@@ -140,6 +194,4 @@ def clean_links():
     clean links dict and numbers list
     """
     SCOREBOARDS_LINKS.clear()
-    SCOREBOARDS_NUMBERS.clear()
-
     SCOREBOARDS_NUMBERS = [0]

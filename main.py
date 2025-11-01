@@ -29,7 +29,7 @@ class App:
             SCOREBOARDS_LINKS[key]['scoreboard']['window'].close()
             SCOREBOARDS_LINKS[key]['maneger']['window'].close()
             
-            clean_links()
+        clean_links()
 
     def open_scoreboard(self):
         """
