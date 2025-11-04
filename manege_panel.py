@@ -115,13 +115,13 @@ class Ui_ManegePanel(object):
         self.comboBox_member_1.addItem("")
         self.comboBox_member_1.addItem("")
         self.verticalLayout_4.addWidget(self.comboBox_member_1)
-        self.comboBox_organization_1 = QtWidgets.QLabel(self.centralwidget)
+        self.label_organization_1 = QtWidgets.QLabel(self.centralwidget)
         font = QtGui.QFont()
         font.setPointSize(16)
-        self.comboBox_organization_1.setFont(font)
-        self.comboBox_organization_1.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.comboBox_organization_1.setObjectName("comboBox_organization_1")
-        self.verticalLayout_4.addWidget(self.comboBox_organization_1)
+        self.label_organization_1.setFont(font)
+        self.label_organization_1.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_organization_1.setObjectName("comboBox_organization_1")
+        self.verticalLayout_4.addWidget(self.label_organization_1)
         self.horizontalLayout_5.addLayout(self.verticalLayout_4)
         self.label_total_score_1 = QtWidgets.QLabel(self.centralwidget)
         font = QtGui.QFont()
@@ -275,13 +275,13 @@ class Ui_ManegePanel(object):
         self.comboBox_member_2.addItem("")
         self.comboBox_member_2.addItem("")
         self.verticalLayout_3.addWidget(self.comboBox_member_2)
-        self.comboBox_organization_2 = QtWidgets.QLabel(self.centralwidget)
+        self.label_organization_2 = QtWidgets.QLabel(self.centralwidget)
         font = QtGui.QFont()
         font.setPointSize(16)
-        self.comboBox_organization_2.setFont(font)
-        self.comboBox_organization_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.comboBox_organization_2.setObjectName("comboBox_organization_2")
-        self.verticalLayout_3.addWidget(self.comboBox_organization_2)
+        self.label_organization_2.setFont(font)
+        self.label_organization_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_organization_2.setObjectName("label_organization_2")
+        self.verticalLayout_3.addWidget(self.label_organization_2)
         self.horizontalLayout_6.addLayout(self.verticalLayout_3)
         self.label_total_score_2 = QtWidgets.QLabel(self.centralwidget)
         font = QtGui.QFont()
@@ -441,7 +441,7 @@ class Ui_ManegePanel(object):
         self.pushButton_shido_1.setText(_translate("MainWindow", "ШИДО"))
         self.comboBox_member_1.setItemText(0, _translate("MainWindow", "БОЖЕВАЛЬНИКОВ Г."))
         self.comboBox_member_1.setItemText(1, _translate("MainWindow", "АБДУЛКАДЫРОВ И."))
-        self.comboBox_organization_1.setText(_translate("MainWindow", "Одинцовская СОШ №3"))
+        self.label_organization_1.setText(_translate("MainWindow", "Одинцовская СОШ №3"))
         self.label_total_score_1.setText(_translate("MainWindow", "0"))
         self.label_weight_category.setText(_translate("MainWindow", "Весовая категория"))
         self.comboBox_weight_category.setItemText(0, _translate("MainWindow", "23"))
@@ -459,7 +459,7 @@ class Ui_ManegePanel(object):
         self.pushButton_hold_stop.setText(_translate("MainWindow", "Стоп"))
         self.comboBox_member_2.setItemText(0, _translate("MainWindow", "БОЖЕВАЛЬНИКОВ Г."))
         self.comboBox_member_2.setItemText(1, _translate("MainWindow", "АБДУЛКАДЫРОВ И."))
-        self.comboBox_organization_2.setText(_translate("MainWindow", "Технолицей им. В.И. Долгих"))
+        self.label_organization_2.setText(_translate("MainWindow", "Технолицей им. В.И. Долгих"))
         self.label_total_score_2.setText(_translate("MainWindow", "0"))
         self.label_yko_score_2.setText(_translate("MainWindow", "0"))
         self.pushButton_yko_2.setText(_translate("MainWindow", "ЮКО"))
@@ -484,7 +484,11 @@ class Ui_ManegePanel(object):
         # hold time
         self.pushButton_hold_start.clicked.connect(lambda: hold_time.start_hold_timer(self.get_window_index()))
         self.pushButton_hold_stop.clicked.connect(lambda: hold_time.stop_hold_time())
+
+        # change combobox information
+        self.comboBox_weight_category.currentTextChanged.connect(lambda: self.update_weight_category(self.get_window_index()))
         
+
     def check_button_event(self, event, name, member_num):
         if event.button() == Qt.LeftButton:
             self.plus_one_score(name, member_num)
@@ -608,6 +612,13 @@ class Ui_ManegePanel(object):
                 ui.label_red_card_2.setStyleSheet("background-color: rgb(255, 0, 0);")
 
         
+    #################### update fighter information ######################
+    def update_weight_category(self, window_id):
+        scoreboard = SCOREBOARDS_LINKS[window_id]['scoreboard']['ui']
+        maneger = SCOREBOARDS_LINKS[window_id]['maneger']['ui']
+
+        scoreboard.label_weight_category.setText(maneger.comboBox_weight_category.currentText())
+
 
     def get_window_index(self) -> int:
         """

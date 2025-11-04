@@ -15,18 +15,14 @@ SCOREBOARDS_LINKS = {
                         'maneger': {'window': ManegePanel, 'ui': Ui_ManegePanel, 'id': id(Ui_ManegePanel)}}            
         }
 
-        
-⁡⁢⁣⁢​‌‌‌Подсказака​⁡
-
-self.label_yellow_card_2_1.setStyleSheet("background-color: rgb(255, 255, 0);")
-
 """
 
 # ⁡⁢⁣⁣​‌‍‌global variables for save state and links​⁡
 
 SCOREBOARDS_LINKS = {}
 SCOREBOARDS_NUMBERS = [0]
-
+PATH_TO_EXCEL = None
+# PATH_TO_EXCEL = QtWidgets.QFileDialog.getOpenFileName()[0]
 
 
 # ⁡⁣⁢⁣​‌‌‌Time functions​⁡
@@ -133,6 +129,8 @@ class HoldTime():
             self.hold_flag = False
             self.HoldTimer.stop()  # Останавливаем таймер
             self.update(f"{self.hold_time:.1f}")
+
+            SCOREBOARDS_LINKS[self.window_id]['maneger']['ui'].pushButton_hold_stop.setText('Сброс')
         else:
             # Сброс полностью
             self.hold_time = 0.0
