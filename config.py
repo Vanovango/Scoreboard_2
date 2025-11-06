@@ -21,8 +21,6 @@ SCOREBOARDS_LINKS = {
 
 SCOREBOARDS_LINKS = {}
 SCOREBOARDS_NUMBERS = [0]
-PATH_TO_EXCEL = None
-# PATH_TO_EXCEL = QtWidgets.QFileDialog.getOpenFileName()[0]
 
 
 # ⁡⁣⁢⁣​‌‌‌Time functions​⁡

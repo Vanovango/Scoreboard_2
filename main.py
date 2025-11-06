@@ -4,6 +4,7 @@ import sys
 from visit_window import Ui_VisitWindow
 
 from config import *
+from db import Database
 
 
 
@@ -14,15 +15,19 @@ class App:
         self.VisitWindow = QtWidgets.QMainWindow()
         self.Ui_VisitWindow = Ui_VisitWindow()
         self.Ui_VisitWindow.setupUi(self.VisitWindow)
-    
+
 
     def open_visit_window(self):
         self.VisitWindow.show()
+
+        db = Database()
+        db.create_table()
 
         # ⁡⁢⁣⁣​‌‌‍push buttons​⁡
         self.Ui_VisitWindow.pushButton_close_app.clicked.connect(lambda: sys.exit())
         self.Ui_VisitWindow.pushButton_new_scoreboard.clicked.connect(self.open_scoreboard)
         self.Ui_VisitWindow.pushButton_close_all_scoreboards.clicked.connect(self.close_all_scoreboards)
+
 
     def close_all_scoreboards(self):
         for key in list(SCOREBOARDS_LINKS.keys()): 
