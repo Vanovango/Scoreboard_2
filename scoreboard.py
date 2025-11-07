@@ -35,13 +35,13 @@ class Ui_Scoreboard(object):
 "")
         self.label_member_2.setObjectName("label_member_2")
         self.verticalLayout_3.addWidget(self.label_member_2)
-        self.label_team_3 = QtWidgets.QLabel(self.frame_member_2)
+        self.label_team_2 = QtWidgets.QLabel(self.frame_member_2)
         font = QtGui.QFont()
         font.setPointSize(20)
-        self.label_team_3.setFont(font)
-        self.label_team_3.setStyleSheet("color: rgb(255, 255, 255);")
-        self.label_team_3.setObjectName("label_team_3")
-        self.verticalLayout_3.addWidget(self.label_team_3)
+        self.label_team_2.setFont(font)
+        self.label_team_2.setStyleSheet("color: rgb(255, 255, 255);")
+        self.label_team_2.setObjectName("label_team_3")
+        self.verticalLayout_3.addWidget(self.label_team_2)
         self.label_winer_3 = QtWidgets.QLabel(self.frame_member_2)
         font = QtGui.QFont()
         font.setPointSize(25)
@@ -206,24 +206,16 @@ class Ui_Scoreboard(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-        self.setObgectsSize()
-
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label_member_2.setText(_translate("MainWindow", "АБДУЛКАДЫРОВ И."))
-        self.label_team_3.setText(_translate("MainWindow", "ТЕХНОЛИЦЕЙ ИМ. В.И. ДОЛГИХ"))
+        self.label_team_2.setText(_translate("MainWindow", "ТЕХНОЛИЦЕЙ ИМ. В.И. ДОЛГИХ"))
         self.label_score_2.setText(_translate("MainWindow", "0"))
         self.label_total_time.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:72pt;\">02:35</span></p></body></html>"))
         self.label_weight_category.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:72pt;\">23 кг</span></p><p><span style=\" font-size:18pt;\">ВЕСОВАЯ КАТЕГОРИЯ</span></p></body></html>"))
-        self.label_hold_time.setText(_translate("MainWindow", "10.0"))
+        self.label_hold_time.setText(_translate("MainWindow", "0.0"))
         self.label_hold.setText(_translate("MainWindow", "УДЕРЖАНИЕ"))
         self.label_member_1.setText(_translate("MainWindow", "БОЖЕВАЛЬНИКОВ Г."))
         self.label_team_1.setText(_translate("MainWindow", "ОДИНЦОВСКАЯ СОШ №3"))
         self.label_score_1.setText(_translate("MainWindow", "0"))
-
-
-    def setObgectsSize(self):
-        self.label_member_1.resize(100, 100)
-        self.label_member_2.resize(100, 100)
-        print("DONE!!!")

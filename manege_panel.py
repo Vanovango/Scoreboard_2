@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import (QMainWindow, QPushButton, QLabel, QVBoxLayout, QWid
 from PyQt5.QtCore import QTimer, QTime, Qt
 
 from config import SCOREBOARDS_LINKS, SCOREBOARDS_NUMBERS, TotalTime, HoldTime, update_scoreboard
+from db import Database
 
 class Ui_ManegePanel(object):
     def setupUi(self, MainWindow):
@@ -112,8 +113,6 @@ class Ui_ManegePanel(object):
         font.setWeight(50)
         self.comboBox_member_1.setFont(font)
         self.comboBox_member_1.setObjectName("comboBox_member_1")
-        self.comboBox_member_1.addItem("")
-        self.comboBox_member_1.addItem("")
         self.verticalLayout_4.addWidget(self.comboBox_member_1)
         self.label_organization_1 = QtWidgets.QLabel(self.centralwidget)
         font = QtGui.QFont()
@@ -169,10 +168,10 @@ class Ui_ManegePanel(object):
         font.setWeight(50)
         self.comboBox_weight_category.setFont(font)
         self.comboBox_weight_category.setObjectName("comboBox_weight_category")
-        self.comboBox_weight_category.addItem("")
-        self.comboBox_weight_category.addItem("")
-        self.comboBox_weight_category.addItem("")
-        self.comboBox_weight_category.addItem("")
+        # load weight categories to combobox
+        self.data = Database()
+        self.comboBox_weight_category.addItems(self.data.get_weight_categories())
+
         self.verticalLayout_5.addWidget(self.comboBox_weight_category)
         self.gridLayout.addLayout(self.verticalLayout_5, 6, 0, 1, 1)
         self.verticalLayout = QtWidgets.QVBoxLayout()
@@ -272,8 +271,6 @@ class Ui_ManegePanel(object):
         font.setWeight(50)
         self.comboBox_member_2.setFont(font)
         self.comboBox_member_2.setObjectName("comboBox_member_2")
-        self.comboBox_member_2.addItem("")
-        self.comboBox_member_2.addItem("")
         self.verticalLayout_3.addWidget(self.comboBox_member_2)
         self.label_organization_2 = QtWidgets.QLabel(self.centralwidget)
         font = QtGui.QFont()
@@ -400,7 +397,7 @@ class Ui_ManegePanel(object):
         self.pushButton_shido_2.mousePressEvent = \
             lambda event, name=self.label_shido_score_2, member_num='2': self.check_button_event(event, name, member_num)
 
-        # ⁡⁢⁣⁣​‌‌‍change score buttons​⁡
+        # ⁡⁢⁣⁣​‌‌‍change score ​‌‌‍buttons⁡​
         # ⁡⁣⁢⁣​‌‍‌left side ​⁡
         self.pushButton_yko_1.setMouseTracking(True)
         self.pushButton_yko_1.mousePressEvent = \
@@ -427,7 +424,6 @@ class Ui_ManegePanel(object):
         self.pushButton_ippon_2.mousePressEvent = \
             lambda event, name=self.label_ippon_score_2, member_num='2': self.check_button_event(event, name, member_num)
 
-
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
@@ -439,15 +435,9 @@ class Ui_ManegePanel(object):
         self.pushButton_ippon_1.setText(_translate("MainWindow", "ИППОН"))
         self.label_shido_score_1.setText(_translate("MainWindow", "0"))
         self.pushButton_shido_1.setText(_translate("MainWindow", "ШИДО"))
-        self.comboBox_member_1.setItemText(0, _translate("MainWindow", "БОЖЕВАЛЬНИКОВ Г."))
-        self.comboBox_member_1.setItemText(1, _translate("MainWindow", "АБДУЛКАДЫРОВ И."))
         self.label_organization_1.setText(_translate("MainWindow", "Одинцовская СОШ №3"))
         self.label_total_score_1.setText(_translate("MainWindow", "0"))
         self.label_weight_category.setText(_translate("MainWindow", "Весовая категория"))
-        self.comboBox_weight_category.setItemText(0, _translate("MainWindow", "23"))
-        self.comboBox_weight_category.setItemText(1, _translate("MainWindow", "25"))
-        self.comboBox_weight_category.setItemText(2, _translate("MainWindow", "27"))
-        self.comboBox_weight_category.setItemText(3, _translate("MainWindow", "28"))
         self.label_total_time_name.setText(_translate("MainWindow", "Вермя"))
         self.label_total_time.setText(_translate("MainWindow", "00:00"))
         self.pushButton_total_time_start.setText(_translate("MainWindow", "Старт"))
@@ -457,8 +447,6 @@ class Ui_ManegePanel(object):
         self.label_hold_time.setText(_translate("MainWindow", "0.0"))
         self.pushButton_hold_start.setText(_translate("MainWindow", "Старт"))
         self.pushButton_hold_stop.setText(_translate("MainWindow", "Стоп"))
-        self.comboBox_member_2.setItemText(0, _translate("MainWindow", "БОЖЕВАЛЬНИКОВ Г."))
-        self.comboBox_member_2.setItemText(1, _translate("MainWindow", "АБДУЛКАДЫРОВ И."))
         self.label_organization_2.setText(_translate("MainWindow", "Технолицей им. В.И. Долгих"))
         self.label_total_score_2.setText(_translate("MainWindow", "0"))
         self.label_yko_score_2.setText(_translate("MainWindow", "0"))
@@ -487,6 +475,8 @@ class Ui_ManegePanel(object):
 
         # change combobox information
         self.comboBox_weight_category.currentTextChanged.connect(lambda: self.update_weight_category(self.get_window_index()))
+        self.comboBox_member_1.currentTextChanged.connect(lambda: self.update_member_1(self.get_window_index()))
+        self.comboBox_member_2.currentTextChanged.connect(lambda: self.update_member_2(self.get_window_index()))
         
 
     def check_button_event(self, event, name, member_num):
@@ -619,7 +609,51 @@ class Ui_ManegePanel(object):
 
         scoreboard.label_weight_category.setText(maneger.comboBox_weight_category.currentText())
 
+        weight_category = int(maneger.comboBox_weight_category.currentText())
+        self.comboBox_member_1.clear()
+        self.comboBox_member_2.clear()
 
+        members_list = self.data.get_members_list(weight_category)
+        
+        self.comboBox_member_1.addItems(members_list['Members'])
+        self.comboBox_member_2.addItems(members_list['Members'])
+
+
+    def update_member_1(self, window_id):
+            scoreboard = SCOREBOARDS_LINKS[window_id]['scoreboard']['ui']
+            maneger = SCOREBOARDS_LINKS[window_id]['maneger']['ui']
+
+            weight_category = int(maneger.comboBox_weight_category.currentText())
+            members_list = self.data.get_members_list(weight_category)
+
+            try: 
+                maneger.label_organization_1.setText(members_list['Teams'][members_list['Members'].index(maneger.comboBox_member_1.currentText())])
+
+                scoreboard.label_team_1.setText(maneger.label_organization_1.text())
+                scoreboard.label_member_1.setText(maneger.comboBox_member_1.currentText())
+            except:
+                maneger.label_organization_1.setText('Выберите спортсмена')
+                scoreboard.label_team_1.setText('Выберите спортсмена')
+                scoreboard.label_member_1.setText('Выберите спортсмена')
+
+    def update_member_2(self, window_id):
+            scoreboard = SCOREBOARDS_LINKS[window_id]['scoreboard']['ui']
+            maneger = SCOREBOARDS_LINKS[window_id]['maneger']['ui']
+
+            weight_category = int(maneger.comboBox_weight_category.currentText())
+            members_list = self.data.get_members_list(weight_category)
+
+            try:
+                maneger.label_organization_2.setText(members_list['Teams'][members_list['Members'].index(maneger.comboBox_member_2.currentText())])
+
+                scoreboard.label_team_2.setText(maneger.label_organization_2.text())
+                scoreboard.label_member_2.setText(maneger.comboBox_member_2.currentText())
+
+            except:
+                maneger.label_organization_2.setText('Выберите спортсмена')
+                scoreboard.label_team_2.setText('Выберите спортсмена')
+                scoreboard.label_member_2.setText('Выберите спортсмена')
+        
     def get_window_index(self) -> int:
         """
         return index of window where this function was called
