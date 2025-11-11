@@ -114,13 +114,13 @@ class Ui_ManegePanel(object):
         self.comboBox_member_1.setFont(font)
         self.comboBox_member_1.setObjectName("comboBox_member_1")
         self.verticalLayout_4.addWidget(self.comboBox_member_1)
-        self.label_organization_1 = QtWidgets.QLabel(self.centralwidget)
+        self.label_team_1 = QtWidgets.QLabel(self.centralwidget)
         font = QtGui.QFont()
         font.setPointSize(16)
-        self.label_organization_1.setFont(font)
-        self.label_organization_1.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_organization_1.setObjectName("comboBox_organization_1")
-        self.verticalLayout_4.addWidget(self.label_organization_1)
+        self.label_team_1.setFont(font)
+        self.label_team_1.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_team_1.setObjectName("comboBox_team_1")
+        self.verticalLayout_4.addWidget(self.label_team_1)
         self.horizontalLayout_5.addLayout(self.verticalLayout_4)
         self.label_total_score_1 = QtWidgets.QLabel(self.centralwidget)
         font = QtGui.QFont()
@@ -135,21 +135,16 @@ class Ui_ManegePanel(object):
         self.fine_layout_1.setContentsMargins(-1, 10, -1, 10)
         self.fine_layout_1.setSpacing(20)
         self.fine_layout_1.setObjectName("fine_layout_1")
-        self.label_yellow_card_1_1 = QtWidgets.QLabel(self.centralwidget)
-        self.label_yellow_card_1_1.setStyleSheet("background-color: rgb(255, 255, 255);")
-        self.label_yellow_card_1_1.setText("")
-        self.label_yellow_card_1_1.setObjectName("label_yellow_card_1_1")
-        self.fine_layout_1.addWidget(self.label_yellow_card_1_1)
-        self.label_yellow_card_1_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_yellow_card_1_2.setStyleSheet("background-color: rgb(255, 255, 255);")
-        self.label_yellow_card_1_2.setText("")
-        self.label_yellow_card_1_2.setObjectName("label_yellow_card_1_2")
-        self.fine_layout_1.addWidget(self.label_yellow_card_1_2)
-        self.label_red_card_1 = QtWidgets.QLabel(self.centralwidget)
-        self.label_red_card_1.setStyleSheet("background-color: rgb(255, 255, 255);")
-        self.label_red_card_1.setText("")
-        self.label_red_card_1.setObjectName("label_red_card_1")
-        self.fine_layout_1.addWidget(self.label_red_card_1)
+        self.label_card_1_1 = QtWidgets.QLabel(self.centralwidget)
+        self.label_card_1_1.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.label_card_1_1.setText("")
+        self.label_card_1_1.setObjectName("label_card_1_1")
+        self.fine_layout_1.addWidget(self.label_card_1_1)
+        self.label_card_1_2 = QtWidgets.QLabel(self.centralwidget)
+        self.label_card_1_2.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.label_card_1_2.setText("")
+        self.label_card_1_2.setObjectName("label_card_1_2")
+        self.fine_layout_1.addWidget(self.label_card_1_2)
         self.horizontalLayout_5.addLayout(self.fine_layout_1)
         self.gridLayout.addLayout(self.horizontalLayout_5, 0, 0, 1, 5)
         self.verticalLayout_5 = QtWidgets.QVBoxLayout()
@@ -272,13 +267,13 @@ class Ui_ManegePanel(object):
         self.comboBox_member_2.setFont(font)
         self.comboBox_member_2.setObjectName("comboBox_member_2")
         self.verticalLayout_3.addWidget(self.comboBox_member_2)
-        self.label_organization_2 = QtWidgets.QLabel(self.centralwidget)
+        self.label_team_2 = QtWidgets.QLabel(self.centralwidget)
         font = QtGui.QFont()
         font.setPointSize(16)
-        self.label_organization_2.setFont(font)
-        self.label_organization_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_organization_2.setObjectName("label_organization_2")
-        self.verticalLayout_3.addWidget(self.label_organization_2)
+        self.label_team_2.setFont(font)
+        self.label_team_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_team_2.setObjectName("label_team_2")
+        self.verticalLayout_3.addWidget(self.label_team_2)
         self.horizontalLayout_6.addLayout(self.verticalLayout_3)
         self.label_total_score_2 = QtWidgets.QLabel(self.centralwidget)
         font = QtGui.QFont()
@@ -293,21 +288,16 @@ class Ui_ManegePanel(object):
         self.fine_layout_2.setContentsMargins(-1, 10, -1, 10)
         self.fine_layout_2.setSpacing(20)
         self.fine_layout_2.setObjectName("fine_layout_2")
-        self.label_yellow_card_2_1 = QtWidgets.QLabel(self.centralwidget)
-        self.label_yellow_card_2_1.setStyleSheet("background-color: rgb(255, 255, 255);")
-        self.label_yellow_card_2_1.setText("")
-        self.label_yellow_card_2_1.setObjectName("label_yellow_card_2_1")
-        self.fine_layout_2.addWidget(self.label_yellow_card_2_1)
-        self.label_yellow_card_2_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_yellow_card_2_2.setStyleSheet("background-color: rgb(255, 255, 255);")
-        self.label_yellow_card_2_2.setText("")
-        self.label_yellow_card_2_2.setObjectName("label_yellow_card_2_2")
-        self.fine_layout_2.addWidget(self.label_yellow_card_2_2)
-        self.label_red_card_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_red_card_2.setStyleSheet("background-color: rgb(255, 255, 255);")
-        self.label_red_card_2.setText("")
-        self.label_red_card_2.setObjectName("label_red_card_2")
-        self.fine_layout_2.addWidget(self.label_red_card_2)
+        self.label_card_2_1 = QtWidgets.QLabel(self.centralwidget)
+        self.label_card_2_1.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.label_card_2_1.setText("")
+        self.label_card_2_1.setObjectName("label_card_2_1")
+        self.fine_layout_2.addWidget(self.label_card_2_1)
+        self.label_card_2_2 = QtWidgets.QLabel(self.centralwidget)
+        self.label_card_2_2.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.label_card_2_2.setText("")
+        self.label_card_2_2.setObjectName("label_card_2_2")
+        self.fine_layout_2.addWidget(self.label_card_2_2)
         self.horizontalLayout_6.addLayout(self.fine_layout_2)
         self.gridLayout.addLayout(self.horizontalLayout_6, 3, 0, 1, 5)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
@@ -424,6 +414,7 @@ class Ui_ManegePanel(object):
         self.pushButton_ippon_2.mousePressEvent = \
             lambda event, name=self.label_ippon_score_2, member_num='2': self.check_button_event(event, name, member_num)
 
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
@@ -435,7 +426,7 @@ class Ui_ManegePanel(object):
         self.pushButton_ippon_1.setText(_translate("MainWindow", "ИППОН"))
         self.label_shido_score_1.setText(_translate("MainWindow", "0"))
         self.pushButton_shido_1.setText(_translate("MainWindow", "ШИДО"))
-        self.label_organization_1.setText(_translate("MainWindow", "Одинцовская СОШ №3"))
+        self.label_team_1.setText(_translate("MainWindow", "ВЫБЕРИТЕ ВЕСОВУЮ КАТЕГОРИЮ"))
         self.label_total_score_1.setText(_translate("MainWindow", "0"))
         self.label_weight_category.setText(_translate("MainWindow", "Весовая категория"))
         self.label_total_time_name.setText(_translate("MainWindow", "Вермя"))
@@ -447,7 +438,7 @@ class Ui_ManegePanel(object):
         self.label_hold_time.setText(_translate("MainWindow", "0.0"))
         self.pushButton_hold_start.setText(_translate("MainWindow", "Старт"))
         self.pushButton_hold_stop.setText(_translate("MainWindow", "Стоп"))
-        self.label_organization_2.setText(_translate("MainWindow", "Технолицей им. В.И. Долгих"))
+        self.label_team_2.setText(_translate("MainWindow", "ВЫБЕРИТЕ ВЕСОВУЮ КАТЕГОРИЮ"))
         self.label_total_score_2.setText(_translate("MainWindow", "0"))
         self.label_yko_score_2.setText(_translate("MainWindow", "0"))
         self.pushButton_yko_2.setText(_translate("MainWindow", "ЮКО"))
@@ -529,77 +520,61 @@ class Ui_ManegePanel(object):
 
         if member_num == '1': # ​‌‌‍up member​
             if name.text() == '0':
-                self.label_yellow_card_1_1.setStyleSheet("background-color: rgb(255, 255, 255);")
-                self.label_yellow_card_1_2.setStyleSheet("background-color: rgb(255, 255, 255);")
-                self.label_red_card_1.setStyleSheet("background-color: rgb(255, 255, 255);")
+                self.label_card_1_1.setStyleSheet("background-color: rgb(255, 255, 255);")
+                self.label_card_1_2.setStyleSheet("background-color: rgb(255, 255, 255);")
 
-                ui.label_yellow_card_1_1.setStyleSheet("background-color: rgb(255, 255, 255);")
-                ui.label_yellow_card_1_2.setStyleSheet("background-color: rgb(255, 255, 255);")
-                ui.label_red_card_1.setStyleSheet("background-color: rgb(255, 255, 255);")
-
+                ui.label_card_1_1.setStyleSheet("background-color: rgb(255, 255, 255);")
+                ui.label_card_1_2.setStyleSheet("background-color: rgb(255, 255, 255);")
+                
             elif name.text() == '1':
-                self.label_yellow_card_1_1.setStyleSheet("background-color: rgb(255, 255, 0);")
-                self.label_yellow_card_1_2.setStyleSheet("background-color: rgb(255, 255, 255);")
-                self.label_red_card_1.setStyleSheet("background-color: rgb(255, 255, 255);")
+                self.label_card_1_1.setStyleSheet("background-color: rgb(255, 255, 0);")
+                self.label_card_1_2.setStyleSheet("background-color: rgb(255, 255, 255);")
 
-                ui.label_yellow_card_1_1.setStyleSheet("background-color: rgb(255, 255, 0);")
-                ui.label_yellow_card_1_2.setStyleSheet("background-color: rgb(255, 255, 255);")
-                ui.label_red_card_1.setStyleSheet("background-color: rgb(255, 255, 255);")
+                ui.label_card_1_1.setStyleSheet("background-color: rgb(255, 255, 0);")
+                ui.label_card_1_2.setStyleSheet("background-color: rgb(255, 255, 255);")
 
             elif name.text() == '2':
-                self.label_yellow_card_1_1.setStyleSheet("background-color: rgb(255, 255, 0);")
-                self.label_yellow_card_1_2.setStyleSheet("background-color: rgb(255, 255, 0);")
-                self.label_red_card_1.setStyleSheet("background-color: rgb(255, 255, 255);")
-
-                ui.label_yellow_card_1_1.setStyleSheet("background-color: rgb(255, 255, 0);")
-                ui.label_yellow_card_1_2.setStyleSheet("background-color: rgb(255, 255, 0);")
-                ui.label_red_card_1.setStyleSheet("background-color: rgb(255, 255, 255);")
-
+                self.label_card_1_1.setStyleSheet("background-color: rgb(255, 255, 0);")
+                self.label_card_1_2.setStyleSheet("background-color: rgb(255, 255, 0);")
+                
+                ui.label_card_1_1.setStyleSheet("background-color: rgb(255, 255, 0);")
+                ui.label_card_1_2.setStyleSheet("background-color: rgb(255, 255, 0);")
+                
             elif name.text() == '3':
-                self.label_yellow_card_1_1.setStyleSheet("background-color: rgb(255, 255, 0);")
-                self.label_yellow_card_1_2.setStyleSheet("background-color: rgb(255, 255, 0);")
-                self.label_red_card_1.setStyleSheet("background-color: rgb(255, 0, 0);")
-
-                ui.label_yellow_card_1_1.setStyleSheet("background-color: rgb(255, 255, 0);")
-                ui.label_yellow_card_1_2.setStyleSheet("background-color: rgb(255, 255, 0);")
-                ui.label_red_card_1.setStyleSheet("background-color: rgb(255, 0, 0);")
+                self.label_card_1_1.setStyleSheet("background-color: rgb(255, 0, 0);")
+                self.label_card_1_2.setStyleSheet("background-color: rgb(255, 255, 255);")
+                
+                ui.label_card_1_1.setStyleSheet("background-color: rgb(255, 0, 0);")
+                ui.label_card_1_2.setStyleSheet("background-color: rgb(255, 255, 255);")
             
         elif member_num == '2': # ​‌‌‍down member​
             if name.text() == '0':
-                self.label_yellow_card_2_1.setStyleSheet("background-color: rgb(255, 255, 255);")
-                self.label_yellow_card_2_2.setStyleSheet("background-color: rgb(255, 255, 255);")
-                self.label_red_card_2.setStyleSheet("background-color: rgb(255, 255, 255);")
-
-                ui.label_yellow_card_2_1.setStyleSheet("background-color: rgb(0, 0, 255);")
-                ui.label_yellow_card_2_2.setStyleSheet("background-color: rgb(0, 0, 255);")
-                ui.label_red_card_2.setStyleSheet("background-color: rgb(0, 0, 255);")
-
+                self.label_card_2_1.setStyleSheet("background-color: rgb(255, 255, 255);")
+                self.label_card_2_2.setStyleSheet("background-color: rgb(255, 255, 255);")
+                
+                ui.label_card_2_1.setStyleSheet("background-color: rgb(0, 0, 255);")
+                ui.label_card_2_2.setStyleSheet("background-color: rgb(0, 0, 255);")
+                
             elif name.text() == '1':
-                self.label_yellow_card_2_1.setStyleSheet("background-color: rgb(255, 255, 0);")
-                self.label_yellow_card_2_2.setStyleSheet("background-color: rgb(255, 255, 255);")
-                self.label_red_card_2.setStyleSheet("background-color: rgb(255, 255, 255);")
-
-                ui.label_yellow_card_2_1.setStyleSheet("background-color: rgb(255, 255, 0);")
-                ui.label_yellow_card_2_2.setStyleSheet("background-color: rgb(0, 0, 255);")
-                ui.label_red_card_2.setStyleSheet("background-color: rgb(0, 0, 255);")
-
+                self.label_card_2_1.setStyleSheet("background-color: rgb(255, 255, 0);")
+                self.label_card_2_2.setStyleSheet("background-color: rgb(255, 255, 255);")
+                
+                ui.label_card_2_1.setStyleSheet("background-color: rgb(255, 255, 0);")
+                ui.label_card_2_2.setStyleSheet("background-color: rgb(0, 0, 255);")
+                
             elif name.text() == '2':
-                self.label_yellow_card_2_1.setStyleSheet("background-color: rgb(255, 255, 0);")
-                self.label_yellow_card_2_2.setStyleSheet("background-color: rgb(255, 255, 0);")
-                self.label_red_card_2.setStyleSheet("background-color: rgb(255, 255, 255);")
-
-                ui.label_yellow_card_2_1.setStyleSheet("background-color: rgb(255, 255, 0);")
-                ui.label_yellow_card_2_2.setStyleSheet("background-color: rgb(255, 255, 0);")
-                ui.label_red_card_2.setStyleSheet("background-color: rgb(0, 0, 255);")
-
+                self.label_card_2_1.setStyleSheet("background-color: rgb(255, 255, 0);")
+                self.label_card_2_2.setStyleSheet("background-color: rgb(255, 255, 0);")
+                
+                ui.label_card_2_1.setStyleSheet("background-color: rgb(255, 255, 0);")
+                ui.label_card_2_2.setStyleSheet("background-color: rgb(255, 255, 0);")
+                
             elif name.text() == '3':
-                self.label_yellow_card_2_1.setStyleSheet("background-color: rgb(255, 255, 0);")
-                self.label_yellow_card_2_2.setStyleSheet("background-color: rgb(255, 255, 0);")
-                self.label_red_card_2.setStyleSheet("background-color: rgb(255, 0, 0);")
-
-                ui.label_yellow_card_2_1.setStyleSheet("background-color: rgb(255, 255, 0);")
-                ui.label_yellow_card_2_2.setStyleSheet("background-color: rgb(255, 255, 0);")
-                ui.label_red_card_2.setStyleSheet("background-color: rgb(255, 0, 0);")
+                self.label_card_2_1.setStyleSheet("background-color: rgb(255, 0, 0);")
+                self.label_card_2_2.setStyleSheet("background-color: rgb(255, 255, 255);")
+                
+                ui.label_card_2_1.setStyleSheet("background-color: rgb(255, 0, 0);")
+                ui.label_card_2_2.setStyleSheet("background-color: rgb(0, 0, 255);")
 
         
     #################### update fighter information ######################
@@ -607,7 +582,7 @@ class Ui_ManegePanel(object):
         scoreboard = SCOREBOARDS_LINKS[window_id]['scoreboard']['ui']
         maneger = SCOREBOARDS_LINKS[window_id]['maneger']['ui']
 
-        scoreboard.label_weight_category.setText(maneger.comboBox_weight_category.currentText())
+        scoreboard.label_weight_category.setText(maneger.comboBox_weight_category.currentText() + " кг")
 
         weight_category = int(maneger.comboBox_weight_category.currentText())
         self.comboBox_member_1.clear()
@@ -627,12 +602,12 @@ class Ui_ManegePanel(object):
             members_list = self.data.get_members_list(weight_category)
 
             try: 
-                maneger.label_organization_1.setText(members_list['Teams'][members_list['Members'].index(maneger.comboBox_member_1.currentText())])
+                maneger.label_team_1.setText(members_list['Teams'][members_list['Members'].index(maneger.comboBox_member_1.currentText())].upper())
 
-                scoreboard.label_team_1.setText(maneger.label_organization_1.text())
-                scoreboard.label_member_1.setText(maneger.comboBox_member_1.currentText())
+                scoreboard.label_team_1.setText(maneger.label_team_1.text().upper())
+                scoreboard.label_member_1.setText(maneger.comboBox_member_1.currentText().upper())
             except:
-                maneger.label_organization_1.setText('Выберите спортсмена')
+                maneger.label_team_1.setText('Выберите спортсмена')
                 scoreboard.label_team_1.setText('Выберите спортсмена')
                 scoreboard.label_member_1.setText('Выберите спортсмена')
 
@@ -644,13 +619,13 @@ class Ui_ManegePanel(object):
             members_list = self.data.get_members_list(weight_category)
 
             try:
-                maneger.label_organization_2.setText(members_list['Teams'][members_list['Members'].index(maneger.comboBox_member_2.currentText())])
+                maneger.label_team_2.setText(members_list['Teams'][members_list['Members'].index(maneger.comboBox_member_2.currentText())].upper())
 
-                scoreboard.label_team_2.setText(maneger.label_organization_2.text())
-                scoreboard.label_member_2.setText(maneger.comboBox_member_2.currentText())
+                scoreboard.label_team_2.setText(maneger.label_team_2.text().upper())
+                scoreboard.label_member_2.setText(maneger.comboBox_member_2.currentText().upper())
 
             except:
-                maneger.label_organization_2.setText('Выберите спортсмена')
+                maneger.label_team_2.setText('Выберите спортсмена')
                 scoreboard.label_team_2.setText('Выберите спортсмена')
                 scoreboard.label_member_2.setText('Выберите спортсмена')
         

@@ -1,5 +1,6 @@
 import sys
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtGui
+from PyQt5.QtWidgets import QMessageBox
 import sqlite3
 import pandas as pd
 
@@ -8,20 +9,35 @@ from config import SCOREBOARDS_LINKS
 
 class Database():
     def __init__(self):
-        self.path = None
+        self.xl_path = None
 
         self.connection = sqlite3.connect('database.db')
         self.cursor = self.connection.cursor()        
     
-    def create_table(self):
+    def choose_upload_source(self):
 
-        # get path to db befor start app
-        QtWidgets.QMessageBox.warning(None, 'Предупреждение', 'Выберите файл с данными об участниках')
-        self.path = QtWidgets.QFileDialog.getOpenFileName()[0]
+        msgBox = QMessageBox()
+        msgBox.setWindowTitle("Информация")
+        msgBox.setText("Выберите способ загрузки таблицы с информацией об участниках.")
+        btn_google = msgBox.addButton('Google', QMessageBox.ButtonRole.ActionRole)
+        btn_excel = msgBox.addButton('Excel', QMessageBox.ButtonRole.ActionRole)
+        msgBox.exec()
+
+        if msgBox.clickedButton() == btn_google:
+            print("Google")
+        elif msgBox.clickedButton() == btn_excel:
+            self.upload_from_xl()
+
+
+    def upload_from_google(self):
+        pass
+
+    def upload_from_xl(self):
+        self.xl_path = QtWidgets.QFileDialog.getOpenFileName()[0]
 
         self.cursor.execute("DROP TABLE IF EXISTS members_list;")
 
-        wb = pd.read_excel(self.path, sheet_name = None)
+        wb = pd.read_excel(self.xl_path, sheet_name = None)
 
         for sheet in wb:
             wb[sheet].to_sql('members_list', self.connection, index=False)

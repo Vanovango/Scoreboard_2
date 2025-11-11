@@ -21,7 +21,7 @@ class App:
         self.VisitWindow.show()
 
         db = Database()
-        db.create_table()
+        db.choose_upload_source()
 
         # ⁡⁢⁣⁣​‌‌‍push buttons​⁡
         self.Ui_VisitWindow.pushButton_close_app.clicked.connect(lambda: sys.exit())

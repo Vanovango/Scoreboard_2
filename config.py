@@ -115,6 +115,9 @@ class HoldTime():
             self.hold_flag = True
             self.HoldTimer.start()  # Запускаем таймер (если не запущен)
 
+            SCOREBOARDS_LINKS[self.window_id]['scoreboard']['ui'].label_hold_time.setStyleSheet("color: rgb(255, 0, 0);")
+            SCOREBOARDS_LINKS[self.window_id]['scoreboard']['ui'].label_hold.setStyleSheet("color: rgb(255, 0, 0);")
+            
     def update_hold_time(self):
         if self.hold_flag:
             self.hold_time += 0.1  # Увеличиваем на 0.1 сек
@@ -126,6 +129,10 @@ class HoldTime():
         if self.hold_flag:
             self.hold_flag = False
             self.HoldTimer.stop()  # Останавливаем таймер
+
+            SCOREBOARDS_LINKS[self.window_id]['scoreboard']['ui'].label_hold_time.setStyleSheet("color: rgb(255, 255, 255);")
+            SCOREBOARDS_LINKS[self.window_id]['scoreboard']['ui'].label_hold.setStyleSheet("color: rgb(255, 255, 255);")
+
             self.update(f"{self.hold_time:.1f}")
 
             SCOREBOARDS_LINKS[self.window_id]['maneger']['ui'].pushButton_hold_stop.setText('Сброс')
