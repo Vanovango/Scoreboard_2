@@ -72,3 +72,23 @@ class Database():
         # print(members_list)
         return members_list
 
+
+    def get_all_list(self, weight_category):
+        members_list = []
+
+        self.cursor.execute(f"SELECT * FROM members_list WHERE Весовая = {weight_category}")
+        rows = self.cursor.fetchall()
+
+        for row in rows:
+            if row[0] != None:
+                members_list.append(
+                    {
+                    'Спортсмен': row[0],
+                    'Команда': row[1],
+                    'Побед|Поражений': row[3],
+                    'Место': row[4]
+                    })
+
+                
+        # print(members_list)
+        return members_list

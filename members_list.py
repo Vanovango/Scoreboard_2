@@ -29,7 +29,7 @@ class Ui_MembersList(object):
         self.comboBox_weight_category.setObjectName("comboBox_weight_category")
         self.gridLayout.addWidget(self.comboBox_weight_category, 0, 1, 1, 1)
 
-        # QTableView — теперь с 5 колонками
+        # QTableView — теперь с 4 колонками
         self.tableView_members_list = QtWidgets.QTableView(self.centralwidget)
         self.tableView_members_list.setObjectName("tableView_members_list")
         self.tableView_members_list.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
@@ -60,7 +60,7 @@ class Ui_MembersList(object):
 
     def setup_table_headers(self):
         """Устанавливает заголовки таблицы"""
-        headers = ["Спортсмен", "Команда", "Весовая", "Побед|Поражений", "Место"]
+        headers = ["Спортсмен", "Команда", "Побед|Поражений", "Место"]
         self.model.setHorizontalHeaderLabels(headers)
 
     def retranslateUi(self, MainWindow):
@@ -73,12 +73,9 @@ class Ui_MembersList(object):
         Загружает и отображает данные участников с нужными колонками.
         Ожидается, что get_members_list возвращает список словарей вида:
         {
-            'Фамилия': 'Иванов',
-            'Имя': 'Иван',
+            'Спортсмен': 'Иванов Иван',
             'Команда': 'Динамо',
-            'Весовая': '70 кг',
-            'Побед': 3,
-            'Поражений': 1,
+            'Побед|Поражений': '3-1',
             'Место': '1'
         }
         """
@@ -89,32 +86,21 @@ class Ui_MembersList(object):
         self.model.setRowCount(0)
 
         # Получаем данные
-        members_data = self.data.get_members_list(weight_category)  # Должен вернуть список словарей
+        members_data = self.data.get_all_list(weight_category)  # Должен вернуть список словарей
 
         for member in members_data:
-            # Полное имя спортсмена
-            full_name = f"{member.get('Фамилия', '')} {member.get('Имя', '')}".strip()
-
-            # Остальные поля
-            team = member.get('Команда', '')
-            weight = member.get('Весовая', weight_category)  # можно взять из данных или из категории
-            wins = member.get('Побед', 0)
-            losses = member.get('Поражений', 0)
-            place = member.get('Место', '')
-
             # Формируем ячейки
-            item_name = QtGui.QStandardItem(full_name)
-            item_team = QtGui.QStandardItem(team)
-            item_weight = QtGui.QStandardItem(weight)
-            item_record = QtGui.QStandardItem(f"{wins}|{losses}")
-            item_place = QtGui.QStandardItem(str(place) if place else "")
+            item_name = QtGui.QStandardItem(member.get('Спортсмен', ''))
+            item_team = QtGui.QStandardItem(member.get('Команда', ''))
+            item_record = QtGui.QStandardItem(member.get('Побед|Поражений', 0))
+            item_place = QtGui.QStandardItem(member.get('Место', ''))
 
             # Отключаем редактирование
-            for item in [item_name, item_team, item_weight, item_record, item_place]:
+            for item in [item_name, item_team, item_record]:
                 item.setSelectable(False)
 
             # Добавляем строку
-            self.model.appendRow([item_name, item_team, item_weight, item_record, item_place])
+            self.model.appendRow([item_name, item_team, item_record, item_place])
 
 
 
