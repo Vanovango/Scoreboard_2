@@ -13,9 +13,8 @@ class Database():
 
         self.connection = sqlite3.connect('database.db')
         self.cursor = self.connection.cursor()        
-    
-    def choose_upload_source(self):
 
+    def choose_upload_source(self):
         msgBox = QMessageBox()
         msgBox.setWindowTitle("Информация")
         msgBox.setText("Выберите способ загрузки таблицы с информацией об участниках.")
@@ -28,7 +27,6 @@ class Database():
         elif msgBox.clickedButton() == btn_excel:
             self.upload_from_xl()
 
-
     def upload_from_google(self):
         pass
 
@@ -37,13 +35,12 @@ class Database():
 
         self.cursor.execute("DROP TABLE IF EXISTS members_list;")
 
-        wb = pd.read_excel(self.xl_path, sheet_name = None)
+        wb = pd.read_excel(self.xl_path, sheet_name=None)
 
         for sheet in wb:
             wb[sheet].to_sql('members_list', self.connection, index=False)
 
         self.connection.commit()
-
 
     def get_weight_categories(self):
         weight_categories_list = []
@@ -55,7 +52,6 @@ class Database():
             weight_categories_list.append(str(row[0]))
         
         return weight_categories_list
-    
 
     def get_members_list(self, weight_category):
         members_list = {'Members': [], 'Teams': []}
@@ -69,9 +65,7 @@ class Database():
                 members_list['Members'].append(tmp_member_name)
                 members_list['Teams'].append(row[1].replace(u'\xa0', u''))
 
-        # print(members_list)
         return members_list
-
 
     def get_all_list(self, weight_category):
         members_list = []
@@ -80,15 +74,40 @@ class Database():
         rows = self.cursor.fetchall()
 
         for row in rows:
-            if row[0] != None:
-                members_list.append(
-                    {
+            if row[0] is not None:
+                members_list.append({
                     'Спортсмен': row[0],
                     'Команда': row[1],
                     'Побед|Поражений': row[3],
                     'Место': row[4]
-                    })
+                })
 
-                
-        # print(members_list)
         return members_list
+
+    def update_member_in_db(self, athlete_name, record, place, weight_category):
+        """
+        Обновляет только поля 'Побед|Поражений' и 'Место' по имени спортсмена и весовой.
+        Использует транзакцию.
+        """
+        try:
+            self.connection.execute("BEGIN TRANSACTION")
+            query = """
+            UPDATE members_list 
+            SET "Побед|Поражений" = ?, Место = ?
+            WHERE Спортсмен = ? AND Весовая = ?
+            """
+            self.cursor.execute(query, (record, place, athlete_name, weight_category))
+
+            if self.cursor.rowcount == 0:
+                print(f"[Ошибка] Участник не найден для обновления: {athlete_name}")
+                self.connection.execute("ROLLBACK")
+                return False
+
+            self.connection.commit()
+            return True
+
+        except Exception as e:
+            self.connection.execute("ROLLBACK")
+            print(f"[Ошибка] При обновлении в БД: {e}")
+            return False
+
