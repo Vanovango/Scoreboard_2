@@ -2,6 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 
 from visit_window import Ui_VisitWindow
+from members_list import Ui_MembersList
 
 from config import *
 from db import Database
@@ -16,6 +17,10 @@ class App:
         self.Ui_VisitWindow = Ui_VisitWindow()
         self.Ui_VisitWindow.setupUi(self.VisitWindow)
 
+        self.MembersList = QtWidgets.QMainWindow()
+        self.Ui_MembersList = Ui_MembersList()
+        self.Ui_MembersList.setupUi(self.MembersList)
+
 
     def open_visit_window(self):
         self.VisitWindow.show()
@@ -27,6 +32,7 @@ class App:
         self.Ui_VisitWindow.pushButton_close_app.clicked.connect(lambda: sys.exit())
         self.Ui_VisitWindow.pushButton_new_scoreboard.clicked.connect(self.open_scoreboard)
         self.Ui_VisitWindow.pushButton_close_all_scoreboards.clicked.connect(self.close_all_scoreboards)
+        self.Ui_VisitWindow.pushButton_members_list.clicked.connect(self.open_members_list)
 
 
     def close_all_scoreboards(self):
@@ -62,6 +68,11 @@ class App:
 
         SCOREBOARDS_LINKS[new_index]['scoreboard']['window'].show()
         SCOREBOARDS_LINKS[new_index]['maneger']['window'].show()
+
+
+    def open_members_list(self):
+        self.MembersList.show()
+    
 
     def run_app(self):
         self.open_visit_window()
