@@ -74,7 +74,7 @@ class Ui_MembersList(object):
 
         # Шрифт для заголовков
         header_font = QtGui.QFont()
-        header_font.setPointSize(16)
+        header_font.setPointSize(14)
         header_font.setBold(True)
 
         for i in range(self.model.columnCount()):
@@ -87,7 +87,7 @@ class Ui_MembersList(object):
         self.model.dataChanged.connect(self.on_data_changed)
 
     def on_data_changed(self, topLeft, bottomRight, roles):
-        """Обработка изменения данных в таблице"""
+        """Обработка изменения данных в таблице — сохраняем Место как строку"""
         row = topLeft.row()
         athlete_item = self.model.item(row, 0)
         if not athlete_item:
@@ -97,18 +97,15 @@ class Ui_MembersList(object):
         record = self.model.item(row, 2).text() if self.model.item(row, 2) else ""
         place_text = self.model.item(row, 3).text() if self.model.item(row, 3) else ""
 
-        try:
-            place = int(place_text) if place_text.strip() else None
-        except ValueError:
-            QtWidgets.QMessageBox.warning(None, "Ошибка", "Место должно быть целым числом.")
-            self.update_members_list(self.comboBox_weight_category.currentText())
-            return
+        # === Ключевое изменение: НЕ преобразуем в int, сохраняем как строку ===
+        place = place_text.strip()  # Сохраняем как есть: "1", "2", "Дисквалификация", или ""
 
         weight_category = self.comboBox_weight_category.currentText()
 
         success = self.data.update_member_in_db(athlete_name, record, place, weight_category)
         if not success:
             QtWidgets.QMessageBox.warning(None, "Ошибка", f"Не удалось обновить данные для {athlete_name}")
+            # Откатываем изменения таблицы
             self.update_members_list(weight_category)
 
     def retranslateUi(self, MainWindow):
@@ -128,7 +125,7 @@ class Ui_MembersList(object):
 
         edit_background = QtGui.QColor(245, 245, 245)  # Светло-серый фон
         font = QtGui.QFont()
-        font.setPointSize(16)
+        font.setPointSize(14)
 
         for member in members_data:
             name = member.get('Спортсмен', '')

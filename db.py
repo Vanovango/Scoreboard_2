@@ -14,6 +14,7 @@ class Database():
         self.connection = sqlite3.connect('database.db')
         self.cursor = self.connection.cursor()        
 
+
     def choose_upload_source(self):
         msgBox = QMessageBox()
         msgBox.setWindowTitle("Информация")
@@ -27,8 +28,10 @@ class Database():
         elif msgBox.clickedButton() == btn_excel:
             self.upload_from_xl()
 
+
     def upload_from_google(self):
         pass
+
 
     def upload_from_xl(self):
         self.xl_path = QtWidgets.QFileDialog.getOpenFileName()[0]
@@ -42,6 +45,7 @@ class Database():
 
         self.connection.commit()
 
+
     def get_weight_categories(self):
         weight_categories_list = []
 
@@ -52,6 +56,7 @@ class Database():
             weight_categories_list.append(str(row[0]))
         
         return weight_categories_list
+
 
     def get_members_list(self, weight_category):
         members_list = {'Members': [], 'Teams': []}
@@ -66,6 +71,7 @@ class Database():
                 members_list['Teams'].append(row[1].replace(u'\xa0', u''))
 
         return members_list
+
 
     def get_all_list(self, weight_category):
         members_list = []
@@ -84,30 +90,27 @@ class Database():
 
         return members_list
 
+
     def update_member_in_db(self, athlete_name, record, place, weight_category):
-        """
-        Обновляет только поля 'Побед|Поражений' и 'Место' по имени спортсмена и весовой.
-        Использует транзакцию.
-        """
+        """Обновляет Побед|Поражений и Место по ФИО и весовой категории"""
         try:
-            self.connection.execute("BEGIN TRANSACTION")
-            query = """
-            UPDATE members_list 
-            SET "Побед|Поражений" = ?, Место = ?
-            WHERE Спортсмен = ? AND Весовая = ?
-            """
-            self.cursor.execute(query, (record, place, athlete_name, weight_category))
+            # Разделяем record на победы и поражения
+            wins, losses = 0, 0
+            if '|' in record:
+                parts = record.split('|')
+                wins = int(parts[0].strip()) if parts[0].strip().isdigit() else 0
+                losses = int(parts[1].strip()) if len(parts) > 1 and parts[1].strip().isdigit() else 0
 
-            if self.cursor.rowcount == 0:
-                print(f"[Ошибка] Участник не найден для обновления: {athlete_name}")
-                self.connection.execute("ROLLBACK")
-                return False
-
-            self.connection.commit()
-            return True
-
+            with sqlite3.connect('database.db') as conn:
+                cursor = conn.cursor()
+                cursor.execute('''
+                    UPDATE members_list 
+                    SET Побед|Поражений = ?, Место = ? 
+                    WHERE Спортсмен = ? AND Весовая = ?
+                ''', (wins, losses, place, athlete_name, weight_category))
+                conn.commit()
+                return True
         except Exception as e:
-            self.connection.execute("ROLLBACK")
-            print(f"[Ошибка] При обновлении в БД: {e}")
+            print(f"Ошибка при обновлении: {e}")
             return False
 

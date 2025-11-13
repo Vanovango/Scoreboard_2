@@ -25,14 +25,17 @@ class App:
     def open_visit_window(self):
         self.VisitWindow.show()
 
-        db = Database()
-        db.choose_upload_source()
-
         # ⁡⁢⁣⁣​‌‌‍push buttons​⁡
         self.Ui_VisitWindow.pushButton_close_app.clicked.connect(lambda: sys.exit())
         self.Ui_VisitWindow.pushButton_new_scoreboard.clicked.connect(self.open_scoreboard)
         self.Ui_VisitWindow.pushButton_close_all_scoreboards.clicked.connect(self.close_all_scoreboards)
         self.Ui_VisitWindow.pushButton_members_list.clicked.connect(self.open_members_list)
+        self.Ui_VisitWindow.pushButton_load_data.clicked.connect(self.load_data)
+
+
+    def load_data(self):
+        db = Database()
+        db.choose_upload_source()
 
 
     def close_all_scoreboards(self):
