@@ -11,7 +11,7 @@ class Ui_MembersList(object):
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName("gridLayout")
 
-        # Label
+        # Label weight_category
         self.label_name_weight_category = QtWidgets.QLabel(self.centralwidget)
         font_label = QtGui.QFont()
         font_label.setPointSize(18)
@@ -19,13 +19,29 @@ class Ui_MembersList(object):
         self.label_name_weight_category.setObjectName("label_name_weight_category")
         self.gridLayout.addWidget(self.label_name_weight_category, 0, 0, 1, 1)
 
-        # ComboBox
+        # ComboBox weight_category
         self.comboBox_weight_category = QtWidgets.QComboBox(self.centralwidget)
         font_combo = QtGui.QFont()
         font_combo.setPointSize(20)
         self.comboBox_weight_category.setFont(font_combo)
         self.comboBox_weight_category.setObjectName("comboBox_weight_category")
         self.gridLayout.addWidget(self.comboBox_weight_category, 0, 1, 1, 1)
+
+        # Label group
+        self.label_name_group = QtWidgets.QLabel(self.centralwidget)
+        font_label = QtGui.QFont()
+        font_label.setPointSize(18)
+        self.label_name_group.setFont(font_label)
+        self.label_name_group.setObjectName("label_name_group")
+        self.gridLayout.addWidget(self.label_name_group, 1, 0, 1, 1)
+
+        # ComboBox group
+        self.comboBox_group = QtWidgets.QComboBox(self.centralwidget)
+        font_combo = QtGui.QFont()
+        font_combo.setPointSize(20)
+        self.comboBox_group.setFont(font_combo)
+        self.comboBox_group.setObjectName("comboBox_group")
+        self.gridLayout.addWidget(self.comboBox_group, 1, 1, 1, 1)
 
         # QTableView
         self.tableView_members_list = QtWidgets.QTableView(self.centralwidget)
@@ -43,7 +59,7 @@ class Ui_MembersList(object):
                 border-bottom: 2px solid #888888;
             }
         """)
-        self.gridLayout.addWidget(self.tableView_members_list, 1, 0, 1, 2)
+        self.gridLayout.addWidget(self.tableView_members_list, 2, 0, 1, 2)
 
         MainWindow.setCentralWidget(self.centralwidget)
 
@@ -57,6 +73,14 @@ class Ui_MembersList(object):
         weight_categories = self.data.get_weight_categories()
         self.comboBox_weight_category.addItems(weight_categories)
 
+        # Загрузка групп
+        """
+        Группы подгружаются в зависимости от выбранной весовой категории
+        Они работают как дополнительный фильтр для участников соревнований
+        """
+        groups = self.data.get_groups()
+        self.comboBox_weight_category.addItems(groups)
+
         # Подключение сигнала
         self.comboBox_weight_category.currentTextChanged.connect(self.update_members_list)
 
@@ -69,12 +93,12 @@ class Ui_MembersList(object):
 
     def setup_table_headers(self):
         """Устанавливает заголовки таблицы — жирный шрифт, размер 16"""
-        headers = ["Спортсмен", "Команда", "Побед|Поражений", "Место"]
+        headers = ["Спортсмен", "Год рождения", "Группа", "Команда", "Побед", "Поражений", "Место"]
         self.model.setHorizontalHeaderLabels(headers)
 
         # Шрифт для заголовков
         header_font = QtGui.QFont()
-        header_font.setPointSize(14)
+        header_font.setPointSize(10)
         header_font.setBold(True)
 
         for i in range(self.model.columnCount()):
@@ -87,72 +111,77 @@ class Ui_MembersList(object):
         self.model.dataChanged.connect(self.on_data_changed)
 
     def on_data_changed(self, topLeft, bottomRight, roles):
-        """Обработка изменения данных в таблице — сохраняем Место как строку"""
+        """Обработка изменения данных — теперь с правильными индексами столбцов"""
         row = topLeft.row()
+
+        # Проверяем, что строка существует
         athlete_item = self.model.item(row, 0)
         if not athlete_item:
             return
 
-        athlete_name = athlete_item.text()
-        record = self.model.item(row, 2).text() if self.model.item(row, 2) else ""
-        place_text = self.model.item(row, 3).text() if self.model.item(row, 3) else ""
+        member_item = athlete_item.text()
+        wins_item = self.model.item(row, 2)
+        losses_item = self.model.item(row, 3)
+        place_item = self.model.item(row, 4)
 
-        # === Ключевое изменение: НЕ преобразуем в int, сохраняем как строку ===
-        place = place_text.strip()  # Сохраняем как есть: "1", "2", "Дисквалификация", или ""
+        wins = wins_item.text().strip() if wins_item else ""
+        losses = losses_item.text().strip() if losses_item else ""
+        place = place_item.text().strip() if place_item else ""
+
+        # Опциональная валидация: заменяем пустое на None или оставляем строку
+        wins = wins if wins.isdigit() else "0"
+        losses = losses if losses.isdigit() else "0"
+        # place — оставляем как строку
 
         weight_category = self.comboBox_weight_category.currentText()
 
-        success = self.data.update_member_in_db(athlete_name, record, place, weight_category)
+        success = self.data.update_member_in_db(member_item, wins, losses, place, weight_category)
         if not success:
-            QtWidgets.QMessageBox.warning(None, "Ошибка", f"Не удалось обновить данные для {athlete_name}")
-            # Откатываем изменения таблицы
-            self.update_members_list(weight_category)
+            QtWidgets.QMessageBox.warning(None, "Ошибка", f"Не удалось обновить данные для {member_item}")
+            # ❌ Не вызывайте update_members_list() здесь — это убьёт dataChanged
+            # Лучше просто ничего не делать или залогировать ошибку
+
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Список участников"))
         self.label_name_weight_category.setText(_translate("MainWindow", "Весовая категория"))
+        self.label_name_group.setText(_translate("MainWindow", "Группа"))
 
     def update_members_list(self, weight_category):
-        """
-        Заполняет таблицу. Если 'Побед|Поражений' — None или пустое, отображаем пустую строку.
-        """
         if not weight_category:
             return
 
         self.model.setRowCount(0)
         members_data = self.data.get_all_list(weight_category)
 
-        edit_background = QtGui.QColor(245, 245, 245)  # Светло-серый фон
+        edit_background = QtGui.QColor(245, 245, 245)
         font = QtGui.QFont()
-        font.setPointSize(14)
+        font.setPointSize(10)
 
         for member in members_data:
             name = member.get('Спортсмен', '')
+            date_of_birth = member.get('Год рождения', '')
+            group = member.get('Группа', '')
             team = member.get('Команда', '')
-
-            # Обработка "Побед|Поражений": None → пусто
-            record_raw = member.get('Побед|Поражений')
-            record = str(record_raw) if record_raw not in (None, '', 'None') else ""
-
-            place = member.get('Место', '')
-
-            try:
-                place_int = int(place) if place and str(place).strip().isdigit() else ""
-            except:
-                place_int = ""
+            wins = str(member.get('Побед', '') or '').strip()
+            losses = str(member.get('Поражений', '') or '').strip()
+            place = str(member.get('Место', '') or '').strip()
 
             item_name = QtGui.QStandardItem(name)
+            item_date_of_birth = QtGui.QStandardItem(date_of_birth)
+            item_group = QtGui.QStandardItem(group)
             item_team = QtGui.QStandardItem(team)
-            item_record = QtGui.QStandardItem(record)
-            item_place = QtGui.QStandardItem(str(place_int) if place_int != "" else "")
+            item_wins = QtGui.QStandardItem(wins)
+            item_losses = QtGui.QStandardItem(losses)
+            item_place = QtGui.QStandardItem(place)
 
-            # Применяем шрифт
-            for item in [item_name, item_team, item_record, item_place]:
+            for item in [item_name, item_date_of_birth, item_group, item_team, item_wins, item_losses, item_place]:
                 item.setFont(font)
 
-            # Выравнивание по центру
-            item_record.setTextAlignment(QtCore.Qt.AlignCenter)
+            # Выравнивание
+            item_wins.setTextAlignment(QtCore.Qt.AlignCenter)
+            item_losses.setTextAlignment(QtCore.Qt.AlignCenter)
             item_place.setTextAlignment(QtCore.Qt.AlignCenter)
 
             # Только чтение: Спортсмен и Команда
@@ -161,32 +190,37 @@ class Ui_MembersList(object):
             item_name.setBackground(QtGui.QColor(255, 255, 255))
             item_team.setBackground(QtGui.QColor(255, 255, 255))
 
-            # Редактируемые — серый фон
-            item_record.setEditable(True)
+            # Редактируемые
+            item_wins.setEditable(True)
+            item_losses.setEditable(True)
             item_place.setEditable(True)
-            item_record.setBackground(edit_background)
-            item_place.setBackground(edit_background)
+            for item in [item_wins, item_losses, item_place]:
+                item.setBackground(edit_background)
 
-            self.model.appendRow([item_name, item_team, item_record, item_place])
+            # Добавляем строку: 0=Спортсмен, 1=Год рождения, 2=Группа, 3=Команда, 4=Побед, 5=Поражений, 6=Место
+            self.model.appendRow([item_name, item_date_of_birth, item_group, item_team, item_wins, item_losses, item_place])
 
-        # Настройка ширины столбцов: 3:3:2:2
-        table_width = self.tableView_members_list.width()
-        self.tableView_members_list.setColumnWidth(0, int(table_width * 0.30))  # Спортсмен
-        self.tableView_members_list.setColumnWidth(1, int(table_width * 0.30))  # Команда
-        self.tableView_members_list.setColumnWidth(2, int(table_width * 0.20))  # Побед|Поражений
-        self.tableView_members_list.setColumnWidth(3, int(table_width * 0.20))  # Место
+    #     # === Правильная ширина столбцов ===
+    #     table_width = self.tableView_members_list.width()
+    #     if table_width > 100:
+    #         self.tableView_members_list.setColumnWidth(0, int(table_width * 0.30))  # Спортсмен
+    #         self.tableView_members_list.setColumnWidth(1, int(table_width * 0.30))  # Команда
+    #         self.tableView_members_list.setColumnWidth(2, int(table_width * 0.15))  # Побед
+    #         self.tableView_members_list.setColumnWidth(3, int(table_width * 0.15))  # Поражений
+    #         self.tableView_members_list.setColumnWidth(4, int(table_width * 0.10))  # Место
 
-        # Адаптивное изменение ширины при ресайзе
-        self.tableView_members_list.resizeEvent = self.make_resize_event()
+    #     # Адаптивность
+    #     self.tableView_members_list.resizeEvent = self.make_resize_event()
 
-    def make_resize_event(self):
-        """Переопределяем resizeEvent для адаптивной ширины столбцов"""
-        def _resize_event(event):
-            QtWidgets.QTableView.resizeEvent(self.tableView_members_list, event)
-            table_width = self.tableView_members_list.width()
-            if table_width > 100:
-                self.tableView_members_list.setColumnWidth(0, int(table_width * 0.30))
-                self.tableView_members_list.setColumnWidth(1, int(table_width * 0.30))
-                self.tableView_members_list.setColumnWidth(2, int(table_width * 0.20))
-                self.tableView_members_list.setColumnWidth(3, int(table_width * 0.20))
-        return _resize_event
+    # def make_resize_event(self):
+    #     def _resize_event(event):
+    #         QtWidgets.QTableView.resizeEvent(self.tableView_members_list, event)
+    #         table_width = self.tableView_members_list.width()
+    #         if table_width > 100:
+    #             self.tableView_members_list.setColumnWidth(0, int(table_width * 0.30))
+    #             self.tableView_members_list.setColumnWidth(1, int(table_width * 0.30))
+    #             self.tableView_members_list.setColumnWidth(2, int(table_width * 0.15))
+    #             self.tableView_members_list.setColumnWidth(3, int(table_width * 0.15))
+    #             self.tableView_members_list.setColumnWidth(4, int(table_width * 0.10))
+    #     return _resize_event
+

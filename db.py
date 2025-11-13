@@ -15,24 +15,6 @@ class Database():
         self.cursor = self.connection.cursor()        
 
 
-    def choose_upload_source(self):
-        msgBox = QMessageBox()
-        msgBox.setWindowTitle("Информация")
-        msgBox.setText("Выберите способ загрузки таблицы с информацией об участниках.")
-        btn_google = msgBox.addButton('Google', QMessageBox.ButtonRole.ActionRole)
-        btn_excel = msgBox.addButton('Excel', QMessageBox.ButtonRole.ActionRole)
-        msgBox.exec()
-
-        if msgBox.clickedButton() == btn_google:
-            print("Google")
-        elif msgBox.clickedButton() == btn_excel:
-            self.upload_from_xl()
-
-
-    def upload_from_google(self):
-        pass
-
-
     def upload_from_xl(self):
         self.xl_path = QtWidgets.QFileDialog.getOpenFileName()[0]
 
@@ -40,8 +22,22 @@ class Database():
 
         wb = pd.read_excel(self.xl_path, sheet_name=None)
 
+        # типы данных для столбцов таблицы
+        type_map = {
+            'Спортсмен': 'TEXT',
+            'Год рождения': 'TEXT',
+            'Весовая_категория': 'INTEGER',
+            'Группа': 'TEXT',
+            'Команда': 'TEXT',
+            'Возростная_категория': 'TEXT',
+        }
+
         for sheet in wb:
-            wb[sheet].to_sql('members_list', self.connection, index=False)
+            wb[sheet].to_sql('members_list', self.connection, index=False, dtype=type_map)
+
+        self.cursor.execute("ALTER TABLE members_list ADD COLUMN 'Побед' INTEGER;")
+        self.cursor.execute("ALTER TABLE members_list ADD COLUMN 'Поражений' INTEGER;")
+        self.cursor.execute("ALTER TABLE members_list ADD COLUMN 'Место' INTEGER;")
 
         self.connection.commit()
 
@@ -49,7 +45,7 @@ class Database():
     def get_weight_categories(self):
         weight_categories_list = []
 
-        self.cursor.execute("SELECT DISTINCT Весовая FROM members_list")
+        self.cursor.execute("SELECT DISTINCT Весовая_категория FROM members_list")
         rows = self.cursor.fetchall()
 
         for row in rows:
@@ -61,7 +57,7 @@ class Database():
     def get_members_list(self, weight_category):
         members_list = {'Members': [], 'Teams': []}
 
-        self.cursor.execute(f"SELECT Спортсмен, Команда FROM members_list WHERE Весовая = {weight_category}")
+        self.cursor.execute(f"SELECT Спортсмен, Команда FROM members_list WHERE Весовая_категория = {weight_category}")
         rows = self.cursor.fetchall()
 
         for row in rows:
@@ -74,43 +70,42 @@ class Database():
 
 
     def get_all_list(self, weight_category):
+        
+        if weight_category is None:
+            return []
+        
         members_list = []
 
-        self.cursor.execute(f"SELECT * FROM members_list WHERE Весовая = {weight_category}")
+        self.cursor.execute(f"SELECT * FROM members_list WHERE Весовая_категория = {weight_category}")
         rows = self.cursor.fetchall()
 
         for row in rows:
             if row[0] is not None:
                 members_list.append({
                     'Спортсмен': row[0],
-                    'Команда': row[1],
-                    'Побед|Поражений': row[3],
-                    'Место': row[4]
+                    'Год рождения': row[1],
+                    'Группа': row[3],
+                    'Команда': row[4],
+                    'Побед': row[6],
+                    'Поражений': row[7],
+                    'Место': row[8]
                 })
 
         return members_list
 
 
-    def update_member_in_db(self, athlete_name, record, place, weight_category):
-        """Обновляет Побед|Поражений и Место по ФИО и весовой категории"""
+    def update_member_in_db(self, member, wins, losses, place, weight_category):
         try:
-            # Разделяем record на победы и поражения
-            wins, losses = 0, 0
-            if '|' in record:
-                parts = record.split('|')
-                wins = int(parts[0].strip()) if parts[0].strip().isdigit() else 0
-                losses = int(parts[1].strip()) if len(parts) > 1 and parts[1].strip().isdigit() else 0
-
             with sqlite3.connect('database.db') as conn:
                 cursor = conn.cursor()
                 cursor.execute('''
                     UPDATE members_list 
-                    SET Побед|Поражений = ?, Место = ? 
-                    WHERE Спортсмен = ? AND Весовая = ?
-                ''', (wins, losses, place, athlete_name, weight_category))
+                    SET 'Побед' = ?, 'Поражений' = ?, 'Место' = ? 
+                    WHERE 'Спортсмен' = ? AND 'Вес кат' = ?
+                ''', (int(wins), int(losses), int(place), member, weight_category))
                 conn.commit()
                 return True
         except Exception as e:
-            print(f"Ошибка при обновлении: {e}")
+            print(f"Ошибка обновления: {e}")
             return False
 

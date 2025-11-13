@@ -5,9 +5,9 @@ import sqlite3
 import requests
 
 # Настройки
-SHEET_URL = "https://docs.google.com/spreadsheets/d/{KEY}/export?format=csv"
+SHEET_URL = "https://docs.google.com/spreadsheets/d/1cYuKM66DrjzWVCQRdQjV3eDzXljhg0sCng48qsW9F9w/edit?gid=1554107328#gid=1554107328"
 DB_NAME = "data.db"
-TABLE_NAME = "my_table"
+TABLE_NAME = "test"
 
 # Загрузка данных из Google Sheets
 response = requests.get(SHEET_URL)
@@ -18,7 +18,7 @@ data = response.text.splitlines()
 csv_reader = csv.reader(data)
 headers = next(csv_reader)
 rows = list(csv_reader)
-
+print(headers)
 # Подключение к SQLite
 conn = sqlite3.connect(DB_NAME)
 cursor = conn.cursor()
@@ -37,3 +37,5 @@ cursor.executemany(
 # Фиксация изменений и закрытие соединения
 conn.commit()
 conn.close()
+
+print(f"✅ Данные успешно сохранены в SQLite ({DB_NAME}), таблица '{TABLE_NAME}'.")

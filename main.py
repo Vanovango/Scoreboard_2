@@ -2,7 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 
 from visit_window import Ui_VisitWindow
-from members_list import Ui_MembersList
+
 
 from config import *
 from db import Database
@@ -16,10 +16,6 @@ class App:
         self.VisitWindow = QtWidgets.QMainWindow()
         self.Ui_VisitWindow = Ui_VisitWindow()
         self.Ui_VisitWindow.setupUi(self.VisitWindow)
-
-        self.MembersList = QtWidgets.QMainWindow()
-        self.Ui_MembersList = Ui_MembersList()
-        self.Ui_MembersList.setupUi(self.MembersList)
 
 
     def open_visit_window(self):
@@ -35,7 +31,7 @@ class App:
 
     def load_data(self):
         db = Database()
-        db.choose_upload_source()
+        db.upload_from_xl()
 
 
     def close_all_scoreboards(self):
@@ -74,6 +70,12 @@ class App:
 
 
     def open_members_list(self):
+        from members_list import Ui_MembersList
+
+        self.MembersList = QtWidgets.QMainWindow()
+        self.Ui_MembersList = Ui_MembersList()
+        self.Ui_MembersList.setupUi(self.MembersList)
+        
         self.MembersList.show()
     
 
