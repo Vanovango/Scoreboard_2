@@ -52,6 +52,18 @@ class Database():
             weight_categories_list.append(str(row[0]))
         
         return weight_categories_list
+    
+
+    def get_groups(self, weight_category):
+        groups_list = []
+
+        self.cursor.execute(f"SELECT DISTINCT Группа FROM members_list WHERE Весовая_категория = {weight_category}")
+        rows = self.cursor.fetchall()
+
+        for row in rows:
+            groups_list.append(str(row[0]))
+        
+        return groups_list
 
 
     def get_members_list(self, weight_category):
@@ -68,15 +80,14 @@ class Database():
 
         return members_list
 
-
-    def get_all_list(self, weight_category):
+    def get_all_list(self, weight_category, group):
         
-        if weight_category is None:
+        if weight_category is None or group is None:
             return []
         
         members_list = []
 
-        self.cursor.execute(f"SELECT * FROM members_list WHERE Весовая_категория = {weight_category}")
+        self.cursor.execute(f"SELECT * FROM members_list WHERE Весовая_категория = {weight_category} AND Группа = {group}")
         rows = self.cursor.fetchall()
 
         for row in rows:
@@ -84,7 +95,6 @@ class Database():
                 members_list.append({
                     'Спортсмен': row[0],
                     'Год рождения': row[1],
-                    'Группа': row[3],
                     'Команда': row[4],
                     'Побед': row[6],
                     'Поражений': row[7],

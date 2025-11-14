@@ -70,30 +70,21 @@ class Ui_MembersList(object):
         self.tableView_members_list.setModel(self.model)
 
         # Загрузка весовых категорий
-        weight_categories = self.data.get_weight_categories()
-        self.comboBox_weight_category.addItems(weight_categories)
-
-        # Загрузка групп
-        """
-        Группы подгружаются в зависимости от выбранной весовой категории
-        Они работают как дополнительный фильтр для участников соревнований
-        """
-        groups = self.data.get_groups()
-        self.comboBox_weight_category.addItems(groups)
+        self.group = []
+        self.weight_categories = self.data.get_weight_categories()
+        self.comboBox_weight_category.addItems(self.weight_categories)
 
         # Подключение сигнала
         self.comboBox_weight_category.currentTextChanged.connect(self.update_members_list)
+        self.comboBox_group.currentTextChanged.connect(self.update_group_combobox)
 
-        # Показать данные при старте
-        if weight_categories:
-            self.update_members_list(weight_categories[0])
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def setup_table_headers(self):
         """Устанавливает заголовки таблицы — жирный шрифт, размер 16"""
-        headers = ["Спортсмен", "Год рождения", "Группа", "Команда", "Побед", "Поражений", "Место"]
+        headers = ["Спортсмен", "Год рождения", "Команда", "Побед", "Поражений", "Место"]
         self.model.setHorizontalHeaderLabels(headers)
 
         # Шрифт для заголовков
@@ -148,12 +139,22 @@ class Ui_MembersList(object):
         self.label_name_weight_category.setText(_translate("MainWindow", "Весовая категория"))
         self.label_name_group.setText(_translate("MainWindow", "Группа"))
 
-    def update_members_list(self, weight_category):
-        if not weight_category:
+    def update_group_combobox(self, weight_category):
+        # Загрузка групп
+        groups = self.data.get_groups(int(self.comboBox_weight_category.currentText()))
+        self.comboBox_group.addItems(groups)
+
+        # Показать данные при старте
+        if weight_category:
+            self.update_members_list(weight_category[0], groups[0])
+
+
+    def update_members_list(self, weight_category, group):
+        if not weight_category or not group:
             return
 
         self.model.setRowCount(0)
-        members_data = self.data.get_all_list(weight_category)
+        members_data = self.data.get_all_list(weight_category, group)
 
         edit_background = QtGui.QColor(245, 245, 245)
         font = QtGui.QFont()
@@ -162,7 +163,6 @@ class Ui_MembersList(object):
         for member in members_data:
             name = member.get('Спортсмен', '')
             date_of_birth = member.get('Год рождения', '')
-            group = member.get('Группа', '')
             team = member.get('Команда', '')
             wins = str(member.get('Побед', '') or '').strip()
             losses = str(member.get('Поражений', '') or '').strip()
@@ -170,13 +170,12 @@ class Ui_MembersList(object):
 
             item_name = QtGui.QStandardItem(name)
             item_date_of_birth = QtGui.QStandardItem(date_of_birth)
-            item_group = QtGui.QStandardItem(group)
             item_team = QtGui.QStandardItem(team)
             item_wins = QtGui.QStandardItem(wins)
             item_losses = QtGui.QStandardItem(losses)
             item_place = QtGui.QStandardItem(place)
 
-            for item in [item_name, item_date_of_birth, item_group, item_team, item_wins, item_losses, item_place]:
+            for item in [item_name, item_date_of_birth, item_team, item_wins, item_losses, item_place]:
                 item.setFont(font)
 
             # Выравнивание
@@ -198,29 +197,6 @@ class Ui_MembersList(object):
                 item.setBackground(edit_background)
 
             # Добавляем строку: 0=Спортсмен, 1=Год рождения, 2=Группа, 3=Команда, 4=Побед, 5=Поражений, 6=Место
-            self.model.appendRow([item_name, item_date_of_birth, item_group, item_team, item_wins, item_losses, item_place])
+            self.model.appendRow([item_name, item_date_of_birth, item_team, item_wins, item_losses, item_place])
 
-    #     # === Правильная ширина столбцов ===
-    #     table_width = self.tableView_members_list.width()
-    #     if table_width > 100:
-    #         self.tableView_members_list.setColumnWidth(0, int(table_width * 0.30))  # Спортсмен
-    #         self.tableView_members_list.setColumnWidth(1, int(table_width * 0.30))  # Команда
-    #         self.tableView_members_list.setColumnWidth(2, int(table_width * 0.15))  # Побед
-    #         self.tableView_members_list.setColumnWidth(3, int(table_width * 0.15))  # Поражений
-    #         self.tableView_members_list.setColumnWidth(4, int(table_width * 0.10))  # Место
-
-    #     # Адаптивность
-    #     self.tableView_members_list.resizeEvent = self.make_resize_event()
-
-    # def make_resize_event(self):
-    #     def _resize_event(event):
-    #         QtWidgets.QTableView.resizeEvent(self.tableView_members_list, event)
-    #         table_width = self.tableView_members_list.width()
-    #         if table_width > 100:
-    #             self.tableView_members_list.setColumnWidth(0, int(table_width * 0.30))
-    #             self.tableView_members_list.setColumnWidth(1, int(table_width * 0.30))
-    #             self.tableView_members_list.setColumnWidth(2, int(table_width * 0.15))
-    #             self.tableView_members_list.setColumnWidth(3, int(table_width * 0.15))
-    #             self.tableView_members_list.setColumnWidth(4, int(table_width * 0.10))
-    #     return _resize_event
-
+  
