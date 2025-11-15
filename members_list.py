@@ -71,12 +71,11 @@ class Ui_MembersList(object):
 
         # Загрузка весовых категорий
         self.group = []
-        self.weight_categories = self.data.get_weight_categories()
+        self.weight_categories = self.data.get_weight_categories()  # Уже отсортированы по возрастанию
         self.comboBox_weight_category.addItems(self.weight_categories)
 
         # Подключение сигнала
-        self.comboBox_weight_category.currentTextChanged.connect(self.update_members_list)
-        self.comboBox_group.currentTextChanged.connect(self.update_group_combobox)
+        self.comboBox_weight_category.currentTextChanged.connect(lambda: self.update_group_combobox(int(self.comboBox_weight_category.currentText())))
 
 
         self.retranslateUi(MainWindow)
@@ -102,7 +101,7 @@ class Ui_MembersList(object):
         self.model.dataChanged.connect(self.on_data_changed)
 
     def on_data_changed(self, topLeft, bottomRight, roles):
-        """Обработка изменения данных — теперь с правильными индексами столбцов"""
+        """Обработка изменения данных с валидацией"""
         row = topLeft.row()
 
         # Проверяем, что строка существует
@@ -111,26 +110,31 @@ class Ui_MembersList(object):
             return
 
         member_item = athlete_item.text()
-        wins_item = self.model.item(row, 2)
-        losses_item = self.model.item(row, 3)
-        place_item = self.model.item(row, 4)
+        
+        # Получаем элементы с проверкой на существование
+        wins_item = self.model.item(row, 3)  # Столбец "Побед"
+        losses_item = self.model.item(row, 4)  # Столбец "Поражений"  
+        place_item = self.model.item(row, 5)  # Столбец "Место"
 
+        # Безопасное получение значений
         wins = wins_item.text().strip() if wins_item else ""
         losses = losses_item.text().strip() if losses_item else ""
         place = place_item.text().strip() if place_item else ""
 
-        # Опциональная валидация: заменяем пустое на None или оставляем строку
-        wins = wins if wins.isdigit() else "0"
-        losses = losses if losses.isdigit() else "0"
-        # place — оставляем как строку
+        # Валидация числовых полей
+        if wins and not wins.isdigit():
+            QtWidgets.QMessageBox.warning(None, "Ошибка", "Поле 'Побед' должно содержать только цифры")
+            return
+            
+        if losses and not losses.isdigit():
+            QtWidgets.QMessageBox.warning(None, "Ошибка", "Поле 'Поражений' должно содержать только цифры")
+            return
 
         weight_category = self.comboBox_weight_category.currentText()
 
         success = self.data.update_member_in_db(member_item, wins, losses, place, weight_category)
         if not success:
             QtWidgets.QMessageBox.warning(None, "Ошибка", f"Не удалось обновить данные для {member_item}")
-            # ❌ Не вызывайте update_members_list() здесь — это убьёт dataChanged
-            # Лучше просто ничего не делать или залогировать ошибку
 
 
     def retranslateUi(self, MainWindow):
@@ -138,15 +142,17 @@ class Ui_MembersList(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "Список участников"))
         self.label_name_weight_category.setText(_translate("MainWindow", "Весовая категория"))
         self.label_name_group.setText(_translate("MainWindow", "Группа"))
+    
 
     def update_group_combobox(self, weight_category):
-        # Загрузка групп
-        groups = self.data.get_groups(int(self.comboBox_weight_category.currentText()))
-        self.comboBox_group.addItems(groups)
+        self.comboBox_group.clear()
 
-        # Показать данные при старте
-        if weight_category:
-            self.update_members_list(weight_category[0], groups[0])
+        # Загрузка групп
+
+        groups = self.data.get_groups(weight_category)
+        self.comboBox_group.addItems(sorted(groups))
+
+        self.comboBox_group.currentTextChanged.connect(lambda: self.update_members_list(weight_category, self.comboBox_group.currentText()))
 
 
     def update_members_list(self, weight_category, group):
@@ -179,6 +185,7 @@ class Ui_MembersList(object):
                 item.setFont(font)
 
             # Выравнивание
+            item_date_of_birth.setTextAlignment(QtCore.Qt.AlignCenter)
             item_wins.setTextAlignment(QtCore.Qt.AlignCenter)
             item_losses.setTextAlignment(QtCore.Qt.AlignCenter)
             item_place.setTextAlignment(QtCore.Qt.AlignCenter)

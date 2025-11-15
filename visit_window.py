@@ -66,7 +66,7 @@ class Ui_VisitWindow(object):
         self.label.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:24pt; font-weight:600;\">Табло </span></p><p align=\"center\"><span style=\" font-size:24pt; font-weight:600;\">для соревнований</span></p><p align=\"center\"><span style=\" font-size:24pt; font-weight:600;\">по дзюдо</span></p></body></html>"))
         self.pushButton_new_scoreboard.setText(_translate("MainWindow", "Новое табло"))
         self.pushButton_members_list.setText(_translate("MainWindow", "Список участников"))
-        self.pushButton_close_all_scoreboards.setText(_translate("MainWindow", "Закрыть все окна"))
+        self.pushButton_close_all_scoreboards.setText(_translate("MainWindow", "Закрыть все табло"))
         self.pushButton_load_data.setText(_translate("MainWindow", "Загрузить данные"))
         self.pushButton_generate_diploma.setText(_translate("MainWindow", "Создать грамоту"))
         self.pushButton_export_table.setText(_translate("MainWindow", "Экспорт результатов"))

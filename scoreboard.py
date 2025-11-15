@@ -243,7 +243,6 @@ class Ui_Scoreboard(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label_member_2.setText(_translate("MainWindow", ""))
-        self.label_team_2.setText(_translate("MainWindow", ""))
         self.label_score_2.setText(_translate("MainWindow", "0"))
         self.label_total_time.setText(_translate("MainWindow", "00:00"))
         self.label_hold_time.setText(_translate("MainWindow", "0.0"))
@@ -252,6 +251,7 @@ class Ui_Scoreboard(object):
         self.label.setText(_translate("MainWindow", "ВЕСОВАЯ"))
         self.label_weight_category_name.setText(_translate("MainWindow", "КАТЕГОРИЯ"))
         self.label_member_1.setText(_translate("MainWindow", ""))
-        self.label_team_1.setText(_translate("MainWindow", ""))
         self.label_score_1.setText(_translate("MainWindow", "0"))
+        self.label_team_1.setText(_translate("MainWindow", "ВЫБЕРИТЕ ВЕСОВУЮ КАТЕГОРИЮ И ГРУППУ"))
+        self.label_team_2.setText(_translate("MainWindow", "ВЫБЕРИТЕ ВЕСОВУЮ КАТЕГОРИЮ И ГРУППУ"))
 

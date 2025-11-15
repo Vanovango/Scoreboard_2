@@ -149,6 +149,7 @@ class Ui_ManegePanel(object):
         self.gridLayout.addLayout(self.horizontalLayout_5, 0, 0, 1, 5)
         self.verticalLayout_5 = QtWidgets.QVBoxLayout()
         self.verticalLayout_5.setObjectName("verticalLayout_5")
+
         self.label_weight_category = QtWidgets.QLabel(self.centralwidget)
         font = QtGui.QFont()
         font.setPointSize(18)
@@ -156,6 +157,7 @@ class Ui_ManegePanel(object):
         self.label_weight_category.setAlignment(QtCore.Qt.AlignCenter)
         self.label_weight_category.setObjectName("label_weight_category")
         self.verticalLayout_5.addWidget(self.label_weight_category)
+
         self.comboBox_weight_category = QtWidgets.QComboBox(self.centralwidget)
         font = QtGui.QFont()
         font.setPointSize(20)
@@ -165,9 +167,33 @@ class Ui_ManegePanel(object):
         self.comboBox_weight_category.setObjectName("comboBox_weight_category")
         # load weight categories to combobox
         self.data = Database()
-        self.comboBox_weight_category.addItems(self.data.get_weight_categories())
-
+        weight_categories = self.data.get_weight_categories()  # Уже отсортированы по возрастанию
+        self.comboBox_weight_category.addItems(weight_categories)
         self.verticalLayout_5.addWidget(self.comboBox_weight_category)
+
+
+        self.label_group = QtWidgets.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(18)
+        self.label_group.setFont(font)
+        self.label_group.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_group.setObjectName("label_group")
+        self.verticalLayout_5.addWidget(self.label_group)
+
+        self.comboBox_group = QtWidgets.QComboBox(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        font.setBold(False)
+        font.setWeight(50)
+        self.comboBox_group.setFont(font)
+        self.comboBox_group.setObjectName("comboBox_group")
+
+        # load groups to combobox
+        # self.data = Database()
+        # self.comboBox_group.addItems(self.data.get_weight_categories())
+        self.verticalLayout_5.addWidget(self.comboBox_group)
+
+
         self.gridLayout.addLayout(self.verticalLayout_5, 6, 0, 1, 1)
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
@@ -448,14 +474,22 @@ class Ui_ManegePanel(object):
         self.pushButton_ippon_2.setText(_translate("MainWindow", "ИППОН"))
         self.label_shido_score_2.setText(_translate("MainWindow", "0"))
         self.pushButton_shido_2.setText(_translate("MainWindow", "ШИДО"))
+        self.label_group.setText(_translate("MainWindow", "Группа"))
+
 
 
     def functions(self, MainWindow):
         total_time = TotalTime()
         hold_time = HoldTime()
+        
+        # Сохраняем ссылки на таймеры для доступа извне
+        self.total_time = total_time
+        self.hold_time = hold_time
 
-        # ​‌‌‍time functions    ​  
-        # total time
+        # Обработчик закрытия окна
+        MainWindow.closeEvent = self.close_event
+
+        # time functions
         self.pushButton_chose_total_time.clicked.connect(lambda: total_time.set_time(self.get_window_index()))
         self.pushButton_total_time_start.clicked.connect(lambda: total_time.TotalTimer.start())
         self.pushButton_total_time_stop.clicked.connect(lambda: total_time.TotalTimer.stop())
@@ -464,11 +498,22 @@ class Ui_ManegePanel(object):
         self.pushButton_hold_start.clicked.connect(lambda: hold_time.start_hold_timer(self.get_window_index()))
         self.pushButton_hold_stop.clicked.connect(lambda: hold_time.stop_hold_time())
 
-        # change combobox information
+        # change combobox information - ПОСЛЕДОВАТЕЛЬНАЯ ЛОГИКА
         self.comboBox_weight_category.currentTextChanged.connect(lambda: self.update_weight_category(self.get_window_index()))
+        self.comboBox_group.currentTextChanged.connect(lambda: self.update_group(self.get_window_index()))
         self.comboBox_member_1.currentTextChanged.connect(lambda: self.update_member_1(self.get_window_index()))
         self.comboBox_member_2.currentTextChanged.connect(lambda: self.update_member_2(self.get_window_index()))
         
+
+    def close_event(self, event):
+        """Обработчик закрытия окна"""
+        # Останавливаем таймеры при закрытии
+        if hasattr(self, 'total_time'):
+            self.total_time.TotalTimer.stop()
+        if hasattr(self, 'hold_time'):
+            self.hold_time.HoldTimer.stop()
+        event.accept()
+
 
     def check_button_event(self, event, name, member_num):
         if event.button() == Qt.LeftButton:
@@ -582,53 +627,147 @@ class Ui_ManegePanel(object):
         scoreboard = SCOREBOARDS_LINKS[window_id]['scoreboard']['ui']
         maneger = SCOREBOARDS_LINKS[window_id]['maneger']['ui']
 
-        scoreboard.label_weight_category.setText(maneger.comboBox_weight_category.currentText() + " кг")
-
-        weight_category = int(maneger.comboBox_weight_category.currentText())
+        # Обновляем отображение весовой категории в формате "20 B"
+        weight_category = maneger.comboBox_weight_category.currentText()
+        scoreboard.label_weight_category.setText(weight_category + " кг")
+        
+        # Очищаем комбобоксы группы и участников
+        self.comboBox_group.clear()
         self.comboBox_member_1.clear()
         self.comboBox_member_2.clear()
-
-        members_list = self.data.get_members_list(weight_category)
         
-        self.comboBox_member_1.addItems(members_list['Members'])
-        self.comboBox_member_2.addItems(members_list['Members'])
+        # Очищаем информацию о командах
+        self.label_team_1.setText('Выберите спортсмена')
+        self.label_team_2.setText('Выберите спортсмена')
+        scoreboard.label_team_1.setText('ВЫБЕРИТЕ СПОРТСМЕНА')
+        scoreboard.label_team_2.setText('ВЫБЕРИТЕ СПОРТСМЕНА')
+        scoreboard.label_member_1.setText('ВЫБЕРИТЕ СПОРТСМЕНА')
+        scoreboard.label_member_2.setText('ВЫБЕРИТЕ СПОРТСМЕНА')
+
+        # Загружаем группы для выбранной весовой категории
+        if weight_category:
+            try:
+                groups = self.data.get_groups(int(weight_category))
+                self.comboBox_group.addItems(sorted(groups))
+            except ValueError:
+                print("Ошибка: некорректная весовая категория")
+
+    
+    def update_group(self, window_id):
+        scoreboard = SCOREBOARDS_LINKS[window_id]['scoreboard']['ui']
+        maneger = SCOREBOARDS_LINKS[window_id]['maneger']['ui']
+
+        # Обновляем отображение весовой категории в формате "20 B"
+        weight_category = maneger.comboBox_weight_category.currentText()
+        group = maneger.comboBox_group.currentText()
+        
+        if weight_category and group:
+            scoreboard.label_weight_category.setText(f"{weight_category} {group}")
+        
+        # Очищаем комбобоксы участников
+        self.comboBox_member_1.clear()
+        self.comboBox_member_2.clear()
+        
+        # Очищаем информацию о командах
+        self.label_team_1.setText('Выберите спортсмена')
+        self.label_team_2.setText('Выберите спортсмена')
+        scoreboard.label_team_1.setText('ВЫБЕРИТЕ СПОРТСМЕНА')
+        scoreboard.label_team_2.setText('ВЫБЕРИТЕ СПОРТСМЕНА')
+        scoreboard.label_member_1.setText('ВЫБЕРИТЕ СПОРТСМЕНА')
+        scoreboard.label_member_2.setText('ВЫБЕРИТЕ СПОРТСМЕНА')
+
+        # Загружаем участников для выбранной группы
+        if weight_category and group:
+            try:
+                members_list = self.data.get_members_list(int(weight_category), group)
+                
+                # Проверяем, что есть участники в выбранной группе
+                if members_list['Members']:
+                    self.comboBox_member_1.addItems(members_list['Members'])
+                    self.comboBox_member_2.addItems(members_list['Members'])
+                else:
+                    print(f"В группе {group} весовой категории {weight_category} нет участников")
+                    
+            except ValueError as e:
+                print(f"Ошибка: некорректные данные для загрузки участников - {e}")
+            except Exception as e:
+                print(f"Ошибка при загрузке участников: {e}")
 
 
     def update_member_1(self, window_id):
-            scoreboard = SCOREBOARDS_LINKS[window_id]['scoreboard']['ui']
-            maneger = SCOREBOARDS_LINKS[window_id]['maneger']['ui']
+        scoreboard = SCOREBOARDS_LINKS[window_id]['scoreboard']['ui']
+        maneger = SCOREBOARDS_LINKS[window_id]['maneger']['ui']
 
-            weight_category = int(maneger.comboBox_weight_category.currentText())
-            members_list = self.data.get_members_list(weight_category)
+        weight_category = maneger.comboBox_weight_category.currentText()
+        group = maneger.comboBox_group.currentText()
+        
+        if not weight_category or not group:
+            return
 
-            try: 
-                maneger.label_team_1.setText(members_list['Teams'][members_list['Members'].index(maneger.comboBox_member_1.currentText())].upper())
-
-                scoreboard.label_team_1.setText(maneger.label_team_1.text().upper())
-                scoreboard.label_member_1.setText(maneger.comboBox_member_1.currentText().upper())
-            except:
+        try:
+            members_list = self.data.get_members_list(int(weight_category), group)
+            
+            # Дополнительная проверка на существование участника в списке
+            current_member = maneger.comboBox_member_1.currentText()
+            if current_member and current_member in members_list['Members']:
+                member_index = members_list['Members'].index(current_member)
+                team_name = members_list['Teams'][member_index]
+                
+                maneger.label_team_1.setText(team_name.upper())
+                scoreboard.label_team_1.setText(team_name.upper())
+                scoreboard.label_member_1.setText(current_member.upper())
+                
+                # Обновляем отображение весовой категории в формате "20 B кг"
+                scoreboard.label_weight_category.setText(f"{weight_category} {group} кг")
+            else:
                 maneger.label_team_1.setText('Выберите спортсмена')
-                scoreboard.label_team_1.setText('Выберите спортсмена')
-                scoreboard.label_member_1.setText('Выберите спортсмена')
+                scoreboard.label_team_1.setText('ВЫБЕРИТЕ СПОРТСМЕНА')
+                scoreboard.label_member_1.setText('ВЫБЕРИТЕ СПОРТСМЕНА')
+            
+        except Exception as e:
+            print(f"Ошибка при обновлении информации о спортсмене 1: {e}")
+            maneger.label_team_1.setText('Выберите спортсмена')
+            scoreboard.label_team_1.setText('ВЫБЕРИТЕ СПОРТСМЕНА')
+            scoreboard.label_member_1.setText('ВЫБЕРИТЕ СПОРТСМЕНА')
+
 
     def update_member_2(self, window_id):
-            scoreboard = SCOREBOARDS_LINKS[window_id]['scoreboard']['ui']
-            maneger = SCOREBOARDS_LINKS[window_id]['maneger']['ui']
+        scoreboard = SCOREBOARDS_LINKS[window_id]['scoreboard']['ui']
+        maneger = SCOREBOARDS_LINKS[window_id]['maneger']['ui']
 
-            weight_category = int(maneger.comboBox_weight_category.currentText())
-            members_list = self.data.get_members_list(weight_category)
-
-            try:
-                maneger.label_team_2.setText(members_list['Teams'][members_list['Members'].index(maneger.comboBox_member_2.currentText())].upper())
-
-                scoreboard.label_team_2.setText(maneger.label_team_2.text().upper())
-                scoreboard.label_member_2.setText(maneger.comboBox_member_2.currentText().upper())
-
-            except:
-                maneger.label_team_2.setText('Выберите спортсмена')
-                scoreboard.label_team_2.setText('Выберите спортсмена')
-                scoreboard.label_member_2.setText('Выберите спортсмена')
+        weight_category = maneger.comboBox_weight_category.currentText()
+        group = maneger.comboBox_group.currentText()
         
+        if not weight_category or not group:
+            return
+
+        try:
+            members_list = self.data.get_members_list(int(weight_category), group)
+            
+            # Дополнительная проверка на существование участника в списке
+            current_member = maneger.comboBox_member_2.currentText()
+            if current_member and current_member in members_list['Members']:
+                member_index = members_list['Members'].index(current_member)
+                team_name = members_list['Teams'][member_index]
+                
+                maneger.label_team_2.setText(team_name.upper())
+                scoreboard.label_team_2.setText(team_name.upper())
+                scoreboard.label_member_2.setText(current_member.upper())
+                
+                # Обновляем отображение весовой категории в формате "20 B кг"
+                scoreboard.label_weight_category.setText(f"{weight_category} {group} кг")
+            else:
+                maneger.label_team_2.setText('Выберите спортсмена')
+                scoreboard.label_team_2.setText('ВЫБЕРИТЕ СПОРТСМЕНА')
+                scoreboard.label_member_2.setText('ВЫБЕРИТЕ СПОРТСМЕНА')
+            
+        except Exception as e:
+            print(f"Ошибка при обновлении информации о спортсмене 2: {e}")
+            maneger.label_team_2.setText('Выберите спортсмена')
+            scoreboard.label_team_2.setText('ВЫБЕРИТЕ СПОРТСМЕНА')
+            scoreboard.label_member_2.setText('ВЫБЕРИТЕ СПОРТСМЕНА')
+        
+
     def get_window_index(self) -> int:
         """
         return index of window where this function was called

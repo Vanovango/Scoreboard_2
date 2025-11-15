@@ -21,12 +21,23 @@ class App:
     def open_visit_window(self):
         self.VisitWindow.show()
 
-        # ⁡⁢⁣⁣​‌‌‍push buttons​⁡
+        # push buttons
         self.Ui_VisitWindow.pushButton_close_app.clicked.connect(lambda: sys.exit())
         self.Ui_VisitWindow.pushButton_new_scoreboard.clicked.connect(self.open_scoreboard)
         self.Ui_VisitWindow.pushButton_close_all_scoreboards.clicked.connect(self.close_all_scoreboards)
         self.Ui_VisitWindow.pushButton_members_list.clicked.connect(self.open_members_list)
         self.Ui_VisitWindow.pushButton_load_data.clicked.connect(self.load_data)
+        self.Ui_VisitWindow.pushButton_export_table.clicked.connect(self.export_data)
+
+
+    def export_data(self):
+        """Экспорт данных в Excel"""
+        db = Database()
+        success = db.export_to_excel()
+        if success:
+            print("Экспорт данных выполнен успешно")
+        else:
+            print("Экспорт данных отменен или завершился с ошибкой")
 
 
     def load_data(self):
@@ -35,7 +46,23 @@ class App:
 
 
     def close_all_scoreboards(self):
-        for key in list(SCOREBOARDS_LINKS.keys()): 
+        # Останавливаем все таймеры перед закрытием окон
+        for key in list(SCOREBOARDS_LINKS.keys()):
+            try:
+                # Получаем UI менеджера для остановки таймеров
+                maneger_ui = SCOREBOARDS_LINKS[key]['maneger']['ui']
+                
+                # Останавливаем таймеры через существующие методы
+                # TotalTime таймер останавливается автоматически при проверке window_id
+                # HoldTime нужно остановить явно
+                hold_time = maneger_ui.hold_time  # Предполагая, что hold_time доступен
+                if hasattr(hold_time, 'stop_hold_time'):
+                    hold_time.stop_hold_time()
+                    
+            except (KeyError, AttributeError) as e:
+                print(f"Ошибка при остановке таймеров: {e}")
+            
+            # Закрываем окна
             SCOREBOARDS_LINKS[key]['scoreboard']['window'].close()
             SCOREBOARDS_LINKS[key]['maneger']['window'].close()
             

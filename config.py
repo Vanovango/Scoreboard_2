@@ -27,11 +27,10 @@ SCOREBOARDS_NUMBERS = [0]
 class TotalTime:
     def __init__(self):
         self.window_id = None
-
-        # ⁡⁣⁢⁣​‌‌​‌‍‌⁡⁢⁢⁢‍Time variables⁡​
         self.TotalTimer = QTimer()
-        self.TotalTimer.timeout.connect(lambda: self.update_timer())
+        self.TotalTimer.timeout.connect(self.update_timer)  # Убрать lambda
         self.total_timer_time = QTime(0, 0)
+        
         
     def set_time(self, window_id):
             self.window_id = window_id
@@ -81,31 +80,42 @@ class TotalTime:
 
 
     def update_timer(self):
+        # Проверяем, существует ли еще окно
+        if self.window_id not in SCOREBOARDS_LINKS:
+            self.TotalTimer.stop()  # Останавливаем таймер если окно закрыто
+            return
+            
         if self.total_timer_time == QTime(0, 0):
             self.TotalTimer.stop()
             return
 
         self.total_timer_time = self.total_timer_time.addSecs(-1)
-
         self.update()
     
 
     def update(self):
-        # total time
-        SCOREBOARDS_LINKS[self.window_id]['maneger']['ui'].label_total_time.setText(self.total_timer_time.toString("mm:ss"))
-        SCOREBOARDS_LINKS[self.window_id]['scoreboard']['ui'].label_total_time.setText(self.total_timer_time.toString("mm:ss"))
+        # Проверяем существование окна перед обновлением
+        if self.window_id not in SCOREBOARDS_LINKS:
+            self.TotalTimer.stop()
+            return
+            
+        try:
+            maneger_ui = SCOREBOARDS_LINKS[self.window_id]['maneger']['ui']
+            scoreboard_ui = SCOREBOARDS_LINKS[self.window_id]['scoreboard']['ui']
+            
+            maneger_ui.label_total_time.setText(self.total_timer_time.toString("mm:ss"))
+            scoreboard_ui.label_total_time.setText(self.total_timer_time.toString("mm:ss"))
+        except KeyError:
+            # Если окно уже закрыто, останавливаем таймер
+            self.TotalTimer.stop()
 
 
 class HoldTime():
     def __init__(self):
         self.window_id = None
-
-        # Таймер
         self.HoldTimer = QTimer()
-        self.HoldTimer.setInterval(100)  # Обновление каждые 100 мс (0.1 сек)
-        self.HoldTimer.timeout.connect(self.update_hold_time)  # Подключаем ОДИН раз
-
-        # Состояние
+        self.HoldTimer.setInterval(100)
+        self.HoldTimer.timeout.connect(self.update_hold_time)
         self.hold_time = 0.0
         self.hold_flag = False
 
@@ -119,10 +129,13 @@ class HoldTime():
             SCOREBOARDS_LINKS[self.window_id]['scoreboard']['ui'].label_hold.setStyleSheet("color: rgb(255, 0, 0);")
             
     def update_hold_time(self):
+        # Проверяем существование окна
+        if self.window_id not in SCOREBOARDS_LINKS:
+            self.HoldTimer.stop()
+            return
+            
         if self.hold_flag:
-            self.hold_time += 0.1  # Увеличиваем на 0.1 сек
-
-            # Обновляем отображение
+            self.hold_time += 0.1
             self.update(f"{self.hold_time:.1f}")
 
     def stop_hold_time(self):
@@ -148,14 +161,19 @@ class HoldTime():
                 SCOREBOARDS_LINKS[self.window_id]['maneger']['ui'].pushButton_hold_stop.setText('Стоп')
 
     def update(self, time: str):
+        # Проверяем существование окна перед обновлением
         if self.window_id not in SCOREBOARDS_LINKS:
+            self.HoldTimer.stop()
             return
+            
+        try:
+            maneger_ui = SCOREBOARDS_LINKS[self.window_id]['maneger']['ui']
+            scoreboard_ui = SCOREBOARDS_LINKS[self.window_id]['scoreboard']['ui']
 
-        maneger_ui = SCOREBOARDS_LINKS[self.window_id]['maneger']['ui']
-        scoreboard_ui = SCOREBOARDS_LINKS[self.window_id]['scoreboard']['ui']
-
-        maneger_ui.label_hold_time.setText(time)
-        scoreboard_ui.label_hold_time.setText(time)
+            maneger_ui.label_hold_time.setText(time)
+            scoreboard_ui.label_hold_time.setText(time)
+        except KeyError:
+            self.HoldTimer.stop()
 
 
 
