@@ -439,7 +439,7 @@ class Ui_ManegePanel(object):
         self.pushButton_ippon_2.setMouseTracking(True)
         self.pushButton_ippon_2.mousePressEvent = \
             lambda event, name=self.label_ippon_score_2, member_num='2': self.check_button_event(event, name, member_num)
-
+        
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -489,6 +489,9 @@ class Ui_ManegePanel(object):
         # Обработчик закрытия окна
         MainWindow.closeEvent = self.close_event
 
+        # Обработчик нажатия клавиш
+        MainWindow.keyPressEvent = self.key_press_event
+
         # time functions
         self.pushButton_chose_total_time.clicked.connect(lambda: total_time.set_time(self.get_window_index()))
         self.pushButton_total_time_start.clicked.connect(lambda: total_time.TotalTimer.start())
@@ -504,6 +507,105 @@ class Ui_ManegePanel(object):
         self.comboBox_member_1.currentTextChanged.connect(lambda: self.update_member_1(self.get_window_index()))
         self.comboBox_member_2.currentTextChanged.connect(lambda: self.update_member_2(self.get_window_index()))
         
+
+    def key_press_event(self, event):
+        """Обработка нажатий клавиш"""
+        try:
+            key = event.key()
+            window_id = self.get_window_index()
+            
+            if window_id == 0:
+                return
+                
+            # 1-й спортсмен
+            # ЮКО
+            if key == Qt.Key_Q: # Q
+                if event.modifiers() & Qt.ShiftModifier:
+                    self.minus_one_score(self.label_yko_score_1, '1')
+                else:
+                    self.plus_one_score(self.label_yko_score_1, '1')
+                    
+            # ВАЗАРИ 
+            elif key == Qt.Key_W: # W
+                if event.modifiers() & Qt.ShiftModifier:
+                    self.minus_one_score(self.label_vazari_score_1, '1')
+                else:
+                    self.plus_one_score(self.label_vazari_score_1, '1')
+                    
+            # ИППОН
+            elif key == Qt.Key_E: # E
+                if event.modifiers() & Qt.ShiftModifier:
+                    self.minus_one_score(self.label_ippon_score_1, '1')
+                else:
+                    self.plus_one_score(self.label_ippon_score_1, '1')
+                    
+            # ШИДО 
+            elif key == Qt.Key_R: # R
+                if event.modifiers() & Qt.ShiftModifier:
+                    self.minus_one_score(self.label_shido_score_1, '1')
+                else:
+                    self.plus_one_score(self.label_shido_score_1, '1')
+                    
+
+            # 2-й спортсмен
+            # ЮКО
+            if key == Qt.Key_A: # A
+                if event.modifiers() & Qt.ShiftModifier:
+                    self.minus_one_score(self.label_yko_score_2, '2')
+                else:
+                    self.plus_one_score(self.label_yko_score_2, '2')
+                    
+            # ВАЗАРИ 
+            elif key == Qt.Key_S: # S
+                if event.modifiers() & Qt.ShiftModifier:
+                    self.minus_one_score(self.label_vazari_score_2, '2')
+                else:
+                    self.plus_one_score(self.label_vazari_score_2, '2')
+                    
+            # ИППОН
+            elif key == Qt.Key_D: # D
+                if event.modifiers() & Qt.ShiftModifier:
+                    self.minus_one_score(self.label_ippon_score_2, '2')
+                else:
+                    self.plus_one_score(self.label_ippon_score_2, '2')
+                    
+            # ШИДО 
+            elif key == Qt.Key_F: # F
+                if event.modifiers() & Qt.ShiftModifier:
+                    self.minus_one_score(self.label_shido_score_2, '2')
+                else:
+                    self.plus_one_score(self.label_shido_score_2, '2')
+            
+            # Alt: удержание (Пуск, Стоп, Сброс)
+            elif key == Qt.Key_Alt:
+                if self.hold_time.hold_flag:
+                    self.hold_time.stop_hold_time()
+                else:
+                    if self.label_hold_time.text() != '0.0':
+                        self.hold_time.stop_hold_time()
+                    else:
+                        self.hold_time.start_hold_timer(window_id)
+                    
+            # 1: основное время (Пуск, Стоп)
+            elif key == Qt.Key_1:
+                if self.label_total_time.text() == '00:00':
+                    self.total_time.set_time(window_id)
+                else:
+                    if self.total_time.TotalTimer.isActive():
+                        self.total_time.TotalTimer.stop()
+                    else:
+                        self.total_time.TotalTimer.start()
+
+            # 2: перезапустить основное время
+            elif key == Qt.Key_2:
+                self.total_time.TotalTimer.stop()
+                self.label_total_time.setText('00:00')
+                SCOREBOARDS_LINKS[window_id]['scoreboard']['ui'].label_total_time.setText('00:00')
+                
+                    
+        except Exception as e:
+            print(f"Ошибка в key_press_event: {e}")        
+
 
     def close_event(self, event):
         """Обработчик закрытия окна"""

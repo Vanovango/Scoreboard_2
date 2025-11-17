@@ -58,14 +58,14 @@ class TotalTime:
             layout.addWidget(pushButton_ok_time)
             ChoseTime.setLayout(layout)
 
-            pushButton_ok_time.clicked.connect(lambda: self.start_totla_time(ChoseTime, time_edit.time()))
+            pushButton_ok_time.clicked.connect(lambda: self.start_total_time(ChoseTime, time_edit.time()))
 
             ChoseTime.exec_()
             
             self.update()
 
 
-    def start_totla_time(self, window, time):
+    def start_total_time(self, window, time):
             window.close()
 
             self.total_timer_time = time

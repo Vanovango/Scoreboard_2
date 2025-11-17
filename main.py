@@ -16,6 +16,7 @@ class App:
         self.VisitWindow = QtWidgets.QMainWindow()
         self.Ui_VisitWindow = Ui_VisitWindow()
         self.Ui_VisitWindow.setupUi(self.VisitWindow)
+        self.VisitWindow.setWindowIcon(QtGui.QIcon('images/app_logo.png'))
 
 
     def open_visit_window(self):
@@ -82,10 +83,12 @@ class App:
         Scoreboard = QtWidgets.QMainWindow()
         Ui_Scoreboard = Ui_Scoreboard()
         Ui_Scoreboard.setupUi(Scoreboard)
+        Scoreboard.setWindowIcon(QtGui.QIcon('images/app_logo.png'))
 
         ManegePanel = QtWidgets.QMainWindow()
         Ui_ManegePanel = Ui_ManegePanel()
         Ui_ManegePanel.setupUi(ManegePanel)
+        ManegePanel.setWindowIcon(QtGui.QIcon('images/app_logo.png'))
 
         SCOREBOARDS_LINKS[new_index] = {
             'scoreboard': {'window': Scoreboard, 'ui': Ui_Scoreboard, 'id': id(Ui_Scoreboard)},
@@ -102,6 +105,7 @@ class App:
         self.MembersList = QtWidgets.QMainWindow()
         self.Ui_MembersList = Ui_MembersList()
         self.Ui_MembersList.setupUi(self.MembersList)
+        self.MembersList.setWindowIcon(QtGui.QIcon('images/app_logo.png'))
         
         self.MembersList.show()
     
