@@ -28,13 +28,13 @@ class Ui_ManegePanel(object):
         self.line_2.setLineWidth(2)
         self.line_2.setFrameShape(QtWidgets.QFrame.HLine)
         self.line_2.setObjectName("line_2")
-        self.gridLayout.addWidget(self.line_2, 2, 0, 1, 5)
+        self.gridLayout.addWidget(self.line_2, 3, 0, 1, 5)
         self.line_3 = QtWidgets.QFrame(self.centralwidget)
         self.line_3.setFrameShadow(QtWidgets.QFrame.Plain)
         self.line_3.setLineWidth(2)
         self.line_3.setFrameShape(QtWidgets.QFrame.HLine)
         self.line_3.setObjectName("line_3")
-        self.gridLayout.addWidget(self.line_3, 5, 0, 1, 5)
+        self.gridLayout.addWidget(self.line_3, 7, 0, 1, 5)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.verticalLayout_6 = QtWidgets.QVBoxLayout()
@@ -102,6 +102,12 @@ class Ui_ManegePanel(object):
         self.verticalLayout_9.addWidget(self.pushButton_shido_1)
         self.horizontalLayout.addLayout(self.verticalLayout_9)
         self.gridLayout.addLayout(self.horizontalLayout, 1, 0, 1, 5)
+        self.pushButton_winner_1 = QtWidgets.QPushButton(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.pushButton_winner_1.setFont(font)
+        self.pushButton_winner_1.setObjectName("pushButton_winner_1")
+        self.gridLayout.addWidget(self.pushButton_winner_1, 2, 0, 1, 5)
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout()
@@ -194,7 +200,7 @@ class Ui_ManegePanel(object):
         self.verticalLayout_5.addWidget(self.comboBox_group)
 
 
-        self.gridLayout.addLayout(self.verticalLayout_5, 6, 0, 1, 1)
+        self.gridLayout.addLayout(self.verticalLayout_5, 8, 0, 1, 1)
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
         self.label_total_time_name = QtWidgets.QLabel(self.centralwidget)
@@ -234,7 +240,7 @@ class Ui_ManegePanel(object):
         self.pushButton_chose_total_time.setFont(font)
         self.pushButton_chose_total_time.setObjectName("pushButton_chose_total_time")
         self.verticalLayout.addWidget(self.pushButton_chose_total_time)
-        self.gridLayout.addLayout(self.verticalLayout, 6, 2, 1, 1)
+        self.gridLayout.addLayout(self.verticalLayout, 8, 2, 1, 1)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.label_hold = QtWidgets.QLabel(self.centralwidget)
@@ -268,19 +274,19 @@ class Ui_ManegePanel(object):
         self.pushButton_hold_stop.setObjectName("pushButton_hold_stop")
         self.horizontalLayout_4.addWidget(self.pushButton_hold_stop)
         self.verticalLayout_2.addLayout(self.horizontalLayout_4)
-        self.gridLayout.addLayout(self.verticalLayout_2, 6, 4, 1, 1)
+        self.gridLayout.addLayout(self.verticalLayout_2, 8, 4, 1, 1)
         self.line_4 = QtWidgets.QFrame(self.centralwidget)
         self.line_4.setFrameShadow(QtWidgets.QFrame.Plain)
         self.line_4.setLineWidth(2)
         self.line_4.setFrameShape(QtWidgets.QFrame.VLine)
         self.line_4.setObjectName("line_4")
-        self.gridLayout.addWidget(self.line_4, 6, 3, 1, 1)
+        self.gridLayout.addWidget(self.line_4, 8, 3, 1, 1)
         self.line = QtWidgets.QFrame(self.centralwidget)
         self.line.setFrameShadow(QtWidgets.QFrame.Plain)
         self.line.setLineWidth(2)
         self.line.setFrameShape(QtWidgets.QFrame.VLine)
         self.line.setObjectName("line")
-        self.gridLayout.addWidget(self.line, 6, 1, 1, 1)
+        self.gridLayout.addWidget(self.line, 8, 1, 1, 1)
         self.horizontalLayout_6 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout()
@@ -325,7 +331,7 @@ class Ui_ManegePanel(object):
         self.label_card_2_2.setObjectName("label_card_2_2")
         self.fine_layout_2.addWidget(self.label_card_2_2)
         self.horizontalLayout_6.addLayout(self.fine_layout_2)
-        self.gridLayout.addLayout(self.horizontalLayout_6, 3, 0, 1, 5)
+        self.gridLayout.addLayout(self.horizontalLayout_6, 4, 0, 1, 5)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.verticalLayout_10 = QtWidgets.QVBoxLayout()
@@ -392,7 +398,15 @@ class Ui_ManegePanel(object):
         self.pushButton_shido_2.setObjectName("pushButton_shido_2")
         self.verticalLayout_13.addWidget(self.pushButton_shido_2)
         self.horizontalLayout_2.addLayout(self.verticalLayout_13)
-        self.gridLayout.addLayout(self.horizontalLayout_2, 4, 0, 1, 5)
+        self.gridLayout.addLayout(self.horizontalLayout_2, 5, 0, 1, 5)
+        self.pushButton_winner_2 = QtWidgets.QPushButton(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.pushButton_winner_2.setFont(font)
+        self.pushButton_winner_2.setObjectName("pushButton_winner_2")
+        self.gridLayout.addWidget(self.pushButton_winner_2, 6, 0, 1, 5)
+
+
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -475,6 +489,8 @@ class Ui_ManegePanel(object):
         self.label_shido_score_2.setText(_translate("MainWindow", "0"))
         self.pushButton_shido_2.setText(_translate("MainWindow", "ШИДО"))
         self.label_group.setText(_translate("MainWindow", "Группа"))
+        self.pushButton_winner_2.setText(_translate("MainWindow", "Победа!"))
+        self.pushButton_winner_1.setText(_translate("MainWindow", "Победа!"))
 
 
 
@@ -506,7 +522,41 @@ class Ui_ManegePanel(object):
         self.comboBox_group.currentTextChanged.connect(lambda: self.update_group(self.get_window_index()))
         self.comboBox_member_1.currentTextChanged.connect(lambda: self.update_member_1(self.get_window_index()))
         self.comboBox_member_2.currentTextChanged.connect(lambda: self.update_member_2(self.get_window_index()))
+
+        # победа одного из участников
+        self.pushButton_winner_1.clicked.connect(lambda: self.set_winer(1, self.get_window_index()))
+        self.pushButton_winner_2.clicked.connect(lambda: self.set_winer(2, self.get_window_index()))
         
+
+    def set_winer(self, member_num, window_id):
+        scoreboard = SCOREBOARDS_LINKS[window_id]['scoreboard']['ui']
+
+        font = QtGui.QFont()
+        font.setPointSize(45)
+        font.bold()
+
+        scoreboard.label_winer_1.setAlignment(QtCore.Qt.AlignLeft)
+        scoreboard.label_winer_1.setFont(font)
+
+        scoreboard.label_winer_2.setAlignment(QtCore.Qt.AlignLeft)
+        scoreboard.label_winer_2.setFont(font)
+
+        if member_num == 1:
+            if scoreboard.label_winer_1.text() == '':
+                self.pushButton_winner_1.setStyleSheet("background-color: rgb(0, 255, 0);")
+                scoreboard.label_winer_1.setText('Победа!')
+            else:
+                self.pushButton_winner_1.setStyleSheet("background-color: rgb(255, 255, 255);")
+                scoreboard.label_winer_1.setText('')
+
+        elif member_num == 2:
+            if scoreboard.label_winer_2.text() == '':
+                self.pushButton_winner_2.setStyleSheet("background-color: rgb(0, 255, 0);")
+                scoreboard.label_winer_2.setText('Победа!')
+            else:
+                self.pushButton_winner_2.setStyleSheet("background-color: rgb(255, 255, 255);")
+                scoreboard.label_winer_2.setText('')
+
 
     def key_press_event(self, event):
         """Обработка нажатий клавиш"""
