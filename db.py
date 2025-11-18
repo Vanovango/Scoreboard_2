@@ -260,7 +260,7 @@ class Database():
 
         # Пути для сохранения
         mask_output_path = path_to_save_pdf
-        merged_output_path = str(Path(path_to_save_pdf).parent / "output_merged.pdf")
+        merged_output_path = str(Path(path_to_save_pdf).parent / "пример_грамот.pdf")
         template_path = "pdf_editor/diploma.pdf"
 
         # Создаем кастомный размер страницы 309 × 222 мм в горизонтальной ориентации
