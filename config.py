@@ -29,7 +29,7 @@ class TotalTime:
         self.window_id = None
         self.TotalTimer = QTimer()
         self.TotalTimer.timeout.connect(self.update_timer)
-        self.total_timer_time = QTime(0, 0)
+        self.total_timer_time = QTime(0, 2, 0)
         self.is_golden_score = False  # Флаг для режима Golden Score
         
     def set_time(self, window_id):
@@ -41,6 +41,7 @@ class TotalTime:
             ChoseTime.resize(260, 231)
 
             time_edit = QTimeEdit()
+            time_edit.setTime(QTime(0, 2, 0))  # Установка времени по умолчанию 2 минуты
             time_edit.setDisplayFormat("mm:ss")
             time_edit.setGeometry(QtCore.QRect(40, 90, 181, 51))
             font = QtGui.QFont()
@@ -78,6 +79,8 @@ class TotalTime:
             
             time_font = QtGui.QFont()
             time_font.setPointSize(100)
+            time_font.setBold(True)
+            time_font.setWeight(75)
             scoreboard.label_total_time.setStyleSheet("color: rgb(136, 255, 0);")  # Возвращаем зеленый
             scoreboard.label_total_time.setFont(time_font)
 
@@ -172,6 +175,7 @@ class TotalTime:
             
             maneger_ui.label_total_time.setText(self.total_timer_time.toString("mm:ss"))
             scoreboard_ui.label_total_time.setText(self.total_timer_time.toString("mm:ss"))
+            
         except Exception as e:
             print(f"Ошибка в update: {e}")
 

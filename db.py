@@ -184,6 +184,191 @@ class Database():
             return False
 
 
+    def generete_diploms(self):
+        try:
+            # Диалог выбора места сохранения
+            path_to_save_pdf, _ = QFileDialog.getSaveFileName(
+                None,
+                "Путь сохранения маски для грамот",
+                "",
+                "PDF (.pdf);; All Files (*)"
+            )
+            
+            if not path_to_save_pdf:
+                return False  # Пользователь отменил диалог
+            
+            # Добавляем расширение .pdf если его нет
+            if not path_to_save_pdf.lower().endswith('.pdf'):
+                path_to_save_pdf += '.pdf'
+
+
+            # место для моего кода
+            query = """
+                    SELECT Спортсмен, Весовая_категория, Группа, Возрастная_категория, Место
+                    FROM members_list
+                    WHERE Место IS NOT NULL;
+                    """
+            self.cursor.execute(query)
+            rows = self.cursor.fetchall()
+            print(rows)
+
+            list_for_pdf = []
+
+            for row in rows:
+                list_for_pdf.append({
+                    "Спортсмен": row[0],
+                    "Весовая_категория": f"{row[1]} {row[2]}",
+                    "Возрастная_категория": f"{row[3]}",
+                    "Место": f"{row[4]}"
+                })
+
+            
+            if self.ganerate_and_save_pdf(list_for_pdf, path_to_save_pdf):
+                # Сообщение об успешном экспорте
+                QMessageBox.information(
+                    None, 
+                    "Генерация завершина", 
+                    f"Файл успешно сохранен здесь:\n{path_to_save_pdf}"
+                )
+                return True
+
+        except Exception as e:
+            error_msg = f"Ошибка при генерации грамот:\n{str(e)}"
+            print(error_msg)
+            QMessageBox.critical(
+                None,
+                "Ошибка экспорта",
+                error_msg
+            )
+            return False
+
+
+    def ganerate_and_save_pdf(self, list_for_pdf, path_to_save_pdf):
+        from reportlab.pdfgen import canvas
+        from reportlab.lib.pagesizes import A4, landscape
+        from reportlab.lib.units import mm
+        from reportlab.pdfbase import pdfmetrics
+        from reportlab.pdfbase.ttfonts import TTFont
+        from pypdf import PdfReader, PdfWriter
+        import io
+        import os
+        import copy
+        from pathlib import Path
+
+        # Регистрируем шрифт
+        pdfmetrics.registerFont(TTFont('DejaVuSans', 'pdf_editor/DejaVuSans.ttf'))
+
+        # Пути для сохранения
+        mask_output_path = path_to_save_pdf
+        merged_output_path = str(Path(path_to_save_pdf).parent / "output_merged.pdf")
+        template_path = "pdf_editor/diploma.pdf"
+
+        # Создаем кастомный размер страницы 309 × 222 мм в горизонтальной ориентации
+        custom_size = (309 * mm, 222 * mm)  # 309 мм ширина, 222 мм высота
+
+        # Создаем временный PDF в памяти для маски
+        packet = io.BytesIO()
+
+        # Создаем canvas с кастомным размером страницы
+        can = canvas.Canvas(packet, pagesize=custom_size)
+
+        # Проходим по всем элементам списка и создаем страницу для каждого
+        for data in list_for_pdf:
+            # ВАЖНО: Устанавливаем прозрачность через сохранение состояния
+            can.saveState()
+            
+            # Рисуем прозрачный прямоугольник на всю страницу
+            can.setFillColorRGB(1, 1, 1, alpha=0)  # Полностью прозрачный
+            can.rect(0, 0, custom_size[0], custom_size[1], fill=1, stroke=0)
+            can.restoreState()
+            
+            # Теперь устанавливаем черный цвет для текста
+            can.setFillColorRGB(0, 0, 0)  # Черный текст
+            
+            # Рисуем центрированное ФИО
+            self.draw_centered_text(can, data['Спортсмен'], 350, 'DejaVuSans', 24, custom_size)
+            
+            # Остальной текст рисуем как раньше (координаты остаются прежними)
+            can.setFont("DejaVuSans", 24)
+            can.drawString(430, 315, data['Место'])
+            
+            can.setFont("DejaVuSans", 16)
+            can.drawString(280, 225, data['Весовая_категория'])
+            can.drawString(530, 225, data['Возрастная_категория'])
+            
+            # Завершаем текущую страницу и начинаем новую (если это не последний элемент)
+            if data != list_for_pdf[-1]:
+                can.showPage()
+
+        # Завершаем рисование
+        can.save()
+
+        # Перемещаем указатель на начало буфера
+        packet.seek(0)
+
+        # Сохраняем маску отдельно
+        with open(mask_output_path, "wb") as output_stream:
+            output_stream.write(packet.getvalue())
+
+        # Теперь создаем версию с наложением на шаблон
+        # Проверяем, существует ли файл шаблона
+        if not os.path.exists(template_path):
+            print(f"Файл шаблона не найден: {template_path}")
+        else:
+            # Читаем созданную маску
+            new_pdf = PdfReader(packet)
+            
+            # Читаем исходный шаблон
+            with open(template_path, "rb") as f:
+                existing_pdf = PdfReader(f)
+                output = PdfWriter()
+
+                # Для каждой страницы маски создаем отдельную страницу с наложением
+                for i in range(len(new_pdf.pages)):
+                    # Берем страницу шаблона (если страниц меньше, чем в маске, используем первую)
+                    if i < len(existing_pdf.pages):
+                        # Создаем глубокую копию страницы шаблона
+                        template_page = existing_pdf.pages[i]
+                    else:
+                        template_page = existing_pdf.pages[0]
+                    
+                    # Создаем временный PDF для отдельной страницы
+                    single_page_packet = io.BytesIO()
+                    single_page_writer = PdfWriter()
+                    single_page_writer.add_page(template_page)
+                    single_page_writer.write(single_page_packet)
+                    single_page_packet.seek(0)
+                    
+                    # Читаем отдельную страницу
+                    single_page_reader = PdfReader(single_page_packet)
+                    single_page = single_page_reader.pages[0]
+                    
+                    # Накладываем маску на отдельную страницу шаблона
+                    single_page.merge_page(new_pdf.pages[i])
+                    output.add_page(single_page)
+
+                # Сохраняем объединенный документ
+                with open(merged_output_path, "wb") as output_stream:
+                    output.write(output_stream)
+
+        print(f"Маска успешно сохранена как {mask_output_path}")
+        print(f"Файл с наложением на шаблон сохранен как {merged_output_path}")
+        print(f"Файл для проверки был сохранен тут: {merged_output_path}")
+
+        return True
+
+
+    def draw_centered_text(self, canvas, text, y, font_name, font_size, custom_size):
+        """
+        Рисует текст по центру страницы по горизонтали.
+        Вычисляет ширину текста и корректирует координату X.
+        """
+        canvas.setFont(font_name, font_size)
+        text_width = canvas.stringWidth(text, font_name, font_size)
+        x = (custom_size[0] - text_width) / 2  # Используем кастомную ширину
+        canvas.drawString(x, y, text)
+
+
     def get_weight_categories(self):
         weight_categories_list = []
 
@@ -298,6 +483,7 @@ class Database():
                     'Спортсмен': row[0],
                     'Год рождения': row[1].split()[0],
                     'Команда': row[4],
+                    'Возрастная категория': row[5], 
                     'Побед': row[6],
                     'Поражений': row[7],
                     'Место': row[8]

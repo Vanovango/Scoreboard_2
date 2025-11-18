@@ -29,6 +29,17 @@ class App:
         self.Ui_VisitWindow.pushButton_members_list.clicked.connect(self.open_members_list)
         self.Ui_VisitWindow.pushButton_load_data.clicked.connect(self.load_data)
         self.Ui_VisitWindow.pushButton_export_table.clicked.connect(self.export_data)
+        self.Ui_VisitWindow.pushButton_generate_diploma.clicked.connect(self.generate_diploma)
+
+
+    def generate_diploma(self):
+        """Генерация дипломов"""
+        db = Database()
+        success = db.generete_diploms()
+        if success:
+            print("Генерация выполнена успешно")
+        else:
+            print("Генерация отменена или завершилась с ошибкой")
 
 
     def export_data(self):

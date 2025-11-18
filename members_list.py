@@ -83,7 +83,7 @@ class Ui_MembersList(object):
 
     def setup_table_headers(self):
         """Устанавливает заголовки таблицы — жирный шрифт, размер 16"""
-        headers = ["Спортсмен", "Год рождения", "Команда", "Побед", "Поражений", "Место"]
+        headers = ["Спортсмен", "Год рождения", "Команда", "Возрастная категория", "Побед", "Поражений", "Место"]
         self.model.setHorizontalHeaderLabels(headers)
 
         # Шрифт для заголовков
@@ -112,9 +112,9 @@ class Ui_MembersList(object):
         member_item = athlete_item.text()
         
         # Получаем элементы с проверкой на существование
-        wins_item = self.model.item(row, 3)  # Столбец "Побед"
-        losses_item = self.model.item(row, 4)  # Столбец "Поражений"  
-        place_item = self.model.item(row, 5)  # Столбец "Место"
+        wins_item = self.model.item(row, 4)  # Столбец "Побед"
+        losses_item = self.model.item(row, 5)  # Столбец "Поражений"  
+        place_item = self.model.item(row, 6)  # Столбец "Место"
 
         # Безопасное получение значений
         wins = wins_item.text().strip() if wins_item else ""
@@ -170,6 +170,7 @@ class Ui_MembersList(object):
             name = member.get('Спортсмен', '')
             date_of_birth = member.get('Год рождения', '')
             team = member.get('Команда', '')
+            age = member.get('Возрастная категория', '')
             wins = str(member.get('Побед', '') or '').strip()
             losses = str(member.get('Поражений', '') or '').strip()
             place = str(member.get('Место', '') or '').strip()
@@ -177,15 +178,17 @@ class Ui_MembersList(object):
             item_name = QtGui.QStandardItem(name)
             item_date_of_birth = QtGui.QStandardItem(date_of_birth)
             item_team = QtGui.QStandardItem(team)
+            item_age = QtGui.QStandardItem(age)
             item_wins = QtGui.QStandardItem(wins)
             item_losses = QtGui.QStandardItem(losses)
             item_place = QtGui.QStandardItem(place)
 
-            for item in [item_name, item_date_of_birth, item_team, item_wins, item_losses, item_place]:
+            for item in [item_name, item_date_of_birth, item_team, item_age, item_wins, item_losses, item_place]:
                 item.setFont(font)
 
             # Выравнивание
             item_date_of_birth.setTextAlignment(QtCore.Qt.AlignCenter)
+            item_age.setTextAlignment(QtCore.Qt.AlignCenter)
             item_wins.setTextAlignment(QtCore.Qt.AlignCenter)
             item_losses.setTextAlignment(QtCore.Qt.AlignCenter)
             item_place.setTextAlignment(QtCore.Qt.AlignCenter)
@@ -203,7 +206,7 @@ class Ui_MembersList(object):
             for item in [item_wins, item_losses, item_place]:
                 item.setBackground(edit_background)
 
-            # Добавляем строку: 0=Спортсмен, 1=Год рождения, 2=Группа, 3=Команда, 4=Побед, 5=Поражений, 6=Место
-            self.model.appendRow([item_name, item_date_of_birth, item_team, item_wins, item_losses, item_place])
+            # Добавляем строку: 0=Спортсмен, 1=Год рождения, 2=Группа, 3=Команда, 4=Возрастная группа, 5=Побед, 6=Поражений, 7=Место
+            self.model.appendRow([item_name, item_date_of_birth, item_team, item_age, item_wins, item_losses, item_place])
 
   

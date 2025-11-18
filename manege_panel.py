@@ -497,6 +497,9 @@ class Ui_ManegePanel(object):
     def functions(self, MainWindow):
         total_time = TotalTime()
         hold_time = HoldTime()
+
+        total_time.total_timer_time = QTime(0, 2, 0)  # Дефолтное время 2 минуты
+        total_time.update()  # Принудительное обновление отображения
         
         # Сохраняем ссылки на таймеры для доступа извне
         self.total_time = total_time
@@ -649,9 +652,15 @@ class Ui_ManegePanel(object):
             # 2: перезапустить основное время
             elif key == Qt.Key_2:
                 self.total_time.TotalTimer.stop()
+
+                time_font = QtGui.QFont()
+                time_font.setPointSize(100)
+                time_font.setBold(True)
+                time_font.setWeight(75)
+                
                 self.label_total_time.setText('00:00')
                 SCOREBOARDS_LINKS[window_id]['scoreboard']['ui'].label_total_time.setText('00:00')
-                
+                SCOREBOARDS_LINKS[window_id]['scoreboard']['ui'].label_total_time.setFont(time_font)
                     
         except Exception as e:
             print(f"Ошибка в key_press_event: {e}")        
