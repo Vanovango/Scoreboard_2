@@ -784,7 +784,8 @@ class Ui_ManegePanel(object):
 
         
     #################### update fighter information ######################
-    def update_total_score(self, scoreboard, maneger):
+    def update_scoreboard_for_new_meet(self, scoreboard, maneger):
+        # обновляем счет
         scoreboard.label_score_1.setText('0')
         maneger.label_total_score_1.setText('0')
 
@@ -795,19 +796,50 @@ class Ui_ManegePanel(object):
         maneger.label_yko_score_1.setText('0')
         maneger.label_vazari_score_1.setText('0')
         maneger.label_ippon_score_1.setText('0')
-        maneger.label_shido_score_1.setText('0')
-
+        
         maneger.label_yko_score_2.setText('0')
         maneger.label_vazari_score_2.setText('0')
         maneger.label_ippon_score_2.setText('0')
+
+        # обновляем время
+        self.total_time.TotalTimer.stop()
+        self.total_time.total_timer_time = QTime(0, 0, 0)
+        maneger.label_total_time.setText('00:00')
+        scoreboard.label_total_time.setText('00:00')
+        
+        self.hold_time.hold_time = 0.0
+        self.hold_time.update("0.0")
+        self.hold_time.HoldTimer.stop()
+        scoreboard.label_hold_time.setStyleSheet("color: rgb(255, 255, 255);")
+        scoreboard.label_hold.setStyleSheet("color: rgb(255, 255, 255);")
+
+        # оновляем карты
+        maneger.label_shido_score_1.setText('0')
         maneger.label_shido_score_2.setText('0')
+
+        maneger.label_card_1_1.setStyleSheet("background-color: rgb(255, 255, 255);")
+        maneger.label_card_1_2.setStyleSheet("background-color: rgb(255, 255, 255);")
+        scoreboard.label_card_1_1.setStyleSheet("background-color: rgb(255, 255, 255);")
+        scoreboard.label_card_1_2.setStyleSheet("background-color: rgb(255, 255, 255);")
+
+        maneger.label_card_2_1.setStyleSheet("background-color: rgb(255, 255, 255);")
+        maneger.label_card_2_2.setStyleSheet("background-color: rgb(255, 255, 255);")
+        scoreboard.label_card_2_1.setStyleSheet("background-color: rgb(0, 0, 255);")
+        scoreboard.label_card_2_2.setStyleSheet("background-color: rgb(0, 0, 255);")
+
+        # сбрасываем победы
+        maneger.pushButton_winner_1.setStyleSheet("background-color: rgb(255, 255, 255);")
+        scoreboard.label_winer_1.setText('')
+        maneger.pushButton_winner_2.setStyleSheet("background-color: rgb(255, 255, 255);")
+        scoreboard.label_winer_2.setText('')
+
 
 
     def update_weight_category(self, window_id):
         scoreboard = SCOREBOARDS_LINKS[window_id]['scoreboard']['ui']
         maneger = SCOREBOARDS_LINKS[window_id]['maneger']['ui']
 
-        self.update_total_score(scoreboard, maneger)
+        self.update_scoreboard_for_new_meet(scoreboard, maneger)
 
         # Обновляем отображение весовой категории в формате "20 B"
         weight_category = maneger.comboBox_weight_category.currentText()
@@ -839,7 +871,7 @@ class Ui_ManegePanel(object):
         scoreboard = SCOREBOARDS_LINKS[window_id]['scoreboard']['ui']
         maneger = SCOREBOARDS_LINKS[window_id]['maneger']['ui']
 
-        self.update_total_score(scoreboard, maneger)
+        self.update_scoreboard_for_new_meet(scoreboard, maneger)
 
         # Обновляем отображение весовой категории в формате "20 B"
         weight_category = maneger.comboBox_weight_category.currentText()
@@ -882,7 +914,7 @@ class Ui_ManegePanel(object):
         scoreboard = SCOREBOARDS_LINKS[window_id]['scoreboard']['ui']
         maneger = SCOREBOARDS_LINKS[window_id]['maneger']['ui']
 
-        self.update_total_score(scoreboard, maneger)
+        self.update_scoreboard_for_new_meet(scoreboard, maneger)
 
         weight_category = maneger.comboBox_weight_category.currentText()
         group = maneger.comboBox_group.currentText()
@@ -921,7 +953,7 @@ class Ui_ManegePanel(object):
         scoreboard = SCOREBOARDS_LINKS[window_id]['scoreboard']['ui']
         maneger = SCOREBOARDS_LINKS[window_id]['maneger']['ui']
 
-        self.update_total_score(scoreboard, maneger)
+        self.update_scoreboard_for_new_meet(scoreboard, maneger)
 
         weight_category = maneger.comboBox_weight_category.currentText()
         group = maneger.comboBox_group.currentText()
