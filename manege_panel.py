@@ -784,13 +784,34 @@ class Ui_ManegePanel(object):
 
         
     #################### update fighter information ######################
+    def update_total_score(self, scoreboard, maneger):
+        scoreboard.label_score_1.setText('0')
+        maneger.label_total_score_1.setText('0')
+
+        scoreboard.label_score_2.setText('0')
+        maneger.label_total_score_2.setText('0')
+        
+
+        maneger.label_yko_score_1.setText('0')
+        maneger.label_vazari_score_1.setText('0')
+        maneger.label_ippon_score_1.setText('0')
+        maneger.label_shido_score_1.setText('0')
+
+        maneger.label_yko_score_2.setText('0')
+        maneger.label_vazari_score_2.setText('0')
+        maneger.label_ippon_score_2.setText('0')
+        maneger.label_shido_score_2.setText('0')
+
+
     def update_weight_category(self, window_id):
         scoreboard = SCOREBOARDS_LINKS[window_id]['scoreboard']['ui']
         maneger = SCOREBOARDS_LINKS[window_id]['maneger']['ui']
 
+        self.update_total_score(scoreboard, maneger)
+
         # Обновляем отображение весовой категории в формате "20 B"
         weight_category = maneger.comboBox_weight_category.currentText()
-        scoreboard.label_weight_category.setText(weight_category + " кг")
+        scoreboard.label_weight_category.setText(weight_category)
         
         # Очищаем комбобоксы группы и участников
         self.comboBox_group.clear()
@@ -817,6 +838,8 @@ class Ui_ManegePanel(object):
     def update_group(self, window_id):
         scoreboard = SCOREBOARDS_LINKS[window_id]['scoreboard']['ui']
         maneger = SCOREBOARDS_LINKS[window_id]['maneger']['ui']
+
+        self.update_total_score(scoreboard, maneger)
 
         # Обновляем отображение весовой категории в формате "20 B"
         weight_category = maneger.comboBox_weight_category.currentText()
@@ -859,6 +882,8 @@ class Ui_ManegePanel(object):
         scoreboard = SCOREBOARDS_LINKS[window_id]['scoreboard']['ui']
         maneger = SCOREBOARDS_LINKS[window_id]['maneger']['ui']
 
+        self.update_total_score(scoreboard, maneger)
+
         weight_category = maneger.comboBox_weight_category.currentText()
         group = maneger.comboBox_group.currentText()
         
@@ -878,8 +903,8 @@ class Ui_ManegePanel(object):
                 scoreboard.label_team_1.setText(team_name.upper())
                 scoreboard.label_member_1.setText(current_member.upper())
                 
-                # Обновляем отображение весовой категории в формате "20 B кг"
-                scoreboard.label_weight_category.setText(f"{weight_category} {group} кг")
+                # Обновляем отображение весовой категории в формате "20 B"
+                scoreboard.label_weight_category.setText(f"{weight_category} {group}")
             else:
                 maneger.label_team_1.setText('Выберите спортсмена')
                 scoreboard.label_team_1.setText('ВЫБЕРИТЕ СПОРТСМЕНА')
@@ -895,6 +920,8 @@ class Ui_ManegePanel(object):
     def update_member_2(self, window_id):
         scoreboard = SCOREBOARDS_LINKS[window_id]['scoreboard']['ui']
         maneger = SCOREBOARDS_LINKS[window_id]['maneger']['ui']
+
+        self.update_total_score(scoreboard, maneger)
 
         weight_category = maneger.comboBox_weight_category.currentText()
         group = maneger.comboBox_group.currentText()
@@ -915,8 +942,8 @@ class Ui_ManegePanel(object):
                 scoreboard.label_team_2.setText(team_name.upper())
                 scoreboard.label_member_2.setText(current_member.upper())
                 
-                # Обновляем отображение весовой категории в формате "20 B кг"
-                scoreboard.label_weight_category.setText(f"{weight_category} {group} кг")
+                # Обновляем отображение весовой категории в формате "20 B"
+                scoreboard.label_weight_category.setText(f"{weight_category} {group}")
             else:
                 maneger.label_team_2.setText('Выберите спортсмена')
                 scoreboard.label_team_2.setText('ВЫБЕРИТЕ СПОРТСМЕНА')
