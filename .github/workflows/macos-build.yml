@@ -35,6 +35,7 @@ jobs:
             --onedir \
             --windowed \
             --name "ScoreBoard_2" \
+            --icon "images/app_logo.icns" \
             --add-data "pdf_editor:pdf_editor" \
             --add-data "images:images" \
             main.py
