@@ -27,8 +27,6 @@ jobs:
 
       - name: Build with PyInstaller
         run: |
-          # Перейдём в директорию, где находится main.py
-          cd Scoreboard_2
           # Выполним pyinstaller с настройками
           pyinstaller \
             --noconfirm \
@@ -43,5 +41,5 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ScoreBoard2-mac-build
-          path: Scoreboard_2/Scoreboard_2/dist/**
+          name: ScoreBoard2-macOS_v1
+          path: builds/dist/**
