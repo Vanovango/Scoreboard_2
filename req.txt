@@ -1,4 +1,4 @@
-sqlite3
+
 openpyxl
 pandas
 pillow
@@ -8,3 +8,4 @@ reportlab
 sqlite
 auto-py-to-exe
 numpy
+
