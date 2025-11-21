@@ -1,0 +1,46 @@
+name: Build macOS App via PyInstaller
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"  # или версия, которую используешь
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r req.txt
+          pip install pyinstaller
+
+      - name: Build with PyInstaller
+        run: |
+          # Перейдём в директорию, где находится main.py
+          cd Scoreboard_2
+          # Выполним pyinstaller с настройками
+          pyinstaller \
+            --noconfirm \
+            --onedir \
+            --windowed \
+            --name "ScoreBoard_2" \
+            --add-data "pdf_editor:pdf_editor" \
+            --add-data "images:images" \
+            main.py
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ScoreBoard2-mac-build
+          path: Scoreboard_2/Scoreboard_2/dist/**
