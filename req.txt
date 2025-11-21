@@ -1,11 +1,8 @@
-
 openpyxl
 pandas
 pillow
 pypdf
 PyQt5
 reportlab
-sqlite
 auto-py-to-exe
 numpy
-
