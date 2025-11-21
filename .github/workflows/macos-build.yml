@@ -1,7 +1,7 @@
-name: Build macOS App via PyInstaller
+name: Manual macOS Build
 
 on:
-  workflow_dispatch
+  workflow_dispatch:
 
 jobs:
   build-macos:
@@ -14,17 +14,17 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.9"  # или версия, которую используешь
+          python-version: "3.9.12"  # или твоя версия
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r req.txt
+          pip install -r requirements.txt
           pip install pyinstaller
 
       - name: Build with PyInstaller
         run: |
-          # Выполним pyinstaller с настройками
+          # Запуск PyInstaller из корня проекта, где лежит main.py
           pyinstaller \
             --noconfirm \
             --onedir \
@@ -38,5 +38,5 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ScoreBoard2-macOS_v1
-          path: builds/dist/**
+          name: ScoreBoard2-macOS-build
+          path: dist/**
