@@ -48,7 +48,7 @@ class Ui_Scoreboard(object):
         self.label_winer_2 = QtWidgets.QLabel(self.frame_member_2)
         self.label_winer_2.setMinimumSize(QtCore.QSize(0, 0))
         font = QtGui.QFont()
-        font.setPointSize(25)
+        font.setPointSize(45)
         self.label_winer_2.setFont(font)
         self.label_winer_2.setStyleSheet("color: rgb(255, 217, 0);")
         self.label_winer_2.setText("")
@@ -140,21 +140,20 @@ class Ui_Scoreboard(object):
         self.label_weight_category.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_weight_category.setObjectName("label_weight_category")
         self.verticalLayout_6.addWidget(self.label_weight_category)
-        self.label = QtWidgets.QLabel(self.frame_everyone)
+        self.btn_weight_category_name_1 = QtWidgets.QPushButton(self.frame_everyone)
         font = QtGui.QFont()
         font.setPointSize(40)
-        self.label.setFont(font)
-        self.label.setStyleSheet("color: rgb(255, 255, 255);")
-        self.label.setObjectName("label")
-        self.verticalLayout_6.addWidget(self.label)
-        self.label_weight_category_name = QtWidgets.QLabel(self.frame_everyone)
+        self.btn_weight_category_name_1.setFont(font)
+        self.btn_weight_category_name_1.setStyleSheet("color: rgb(255, 255, 255); text-align: left;")
+        self.btn_weight_category_name_1.setObjectName("label")
+        self.verticalLayout_6.addWidget(self.btn_weight_category_name_1)
+        self.btn_weight_category_name_2 = QtWidgets.QPushButton(self.frame_everyone)
         font = QtGui.QFont()
         font.setPointSize(40)
-        self.label_weight_category_name.setFont(font)
-        self.label_weight_category_name.setStyleSheet("color: rgb(255, 255, 255);")
-        self.label_weight_category_name.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_weight_category_name.setObjectName("label_weight_category_name")
-        self.verticalLayout_6.addWidget(self.label_weight_category_name)
+        self.btn_weight_category_name_2.setFont(font)
+        self.btn_weight_category_name_2.setStyleSheet("color: rgb(255, 255, 255); text-align: left;")
+        self.btn_weight_category_name_2.setObjectName("label_weight_category_name")
+        self.verticalLayout_6.addWidget(self.btn_weight_category_name_2)
         self.gridLayout_2.addLayout(self.verticalLayout_6, 0, 0, 2, 1)
         self.gridLayout.addWidget(self.frame_everyone, 2, 0, 1, 1)
         self.frame_member_1 = QtWidgets.QFrame(self.centralwidget)
@@ -192,7 +191,7 @@ class Ui_Scoreboard(object):
         self.label_winer_1 = QtWidgets.QLabel(self.frame_member_1)
         self.label_winer_1.setMinimumSize(QtCore.QSize(0, 0))
         font = QtGui.QFont()
-        font.setPointSize(19)
+        font.setPointSize(45)
         self.label_winer_1.setFont(font)
         self.label_winer_1.setStyleSheet("color: rgb(255, 217, 0);")
         self.label_winer_1.setText("")
@@ -239,6 +238,8 @@ class Ui_Scoreboard(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+        self.functions(MainWindow)
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
@@ -248,10 +249,98 @@ class Ui_Scoreboard(object):
         self.label_hold_time.setText(_translate("MainWindow", "0.0"))
         self.label_hold.setText(_translate("MainWindow", "УДЕРЖАНИЕ"))
         self.label_weight_category.setText(_translate("MainWindow", ""))
-        self.label.setText(_translate("MainWindow", "ВЕСОВАЯ"))
-        self.label_weight_category_name.setText(_translate("MainWindow", "КАТЕГОРИЯ"))
+        self.btn_weight_category_name_1.setText(_translate("MainWindow", "ВЕСОВАЯ"))
+        self.btn_weight_category_name_2.setText(_translate("MainWindow", "КАТЕГОРИЯ"))
         self.label_member_1.setText(_translate("MainWindow", ""))
         self.label_score_1.setText(_translate("MainWindow", "0"))
         self.label_team_1.setText(_translate("MainWindow", "ВЫБЕРИТЕ ВЕСОВУЮ КАТЕГОРИЮ И ГРУППУ"))
         self.label_team_2.setText(_translate("MainWindow", "ВЫБЕРИТЕ ВЕСОВУЮ КАТЕГОРИЮ И ГРУППУ"))
+
+
+    def functions(self, MainWindow):
+        self.btn_weight_category_name_1.clicked.connect(lambda: self.set_new_font(MainWindow))
+        self.btn_weight_category_name_2.clicked.connect(lambda: self.set_new_font(MainWindow))
+
+
+    def set_new_font(self, MainWindow):
+        window_size = (MainWindow.width(), MainWindow.height())
+        scale_coef = window_size[0] / 1920
+
+        # create fonts and set point size for window size
+        # total time
+        font = QtGui.QFont()
+        font.setPointSize(int(100 * scale_coef))
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_total_time.setFont(font)
+
+        # hold time
+        font = QtGui.QFont()
+        font.setPointSize(int(70 * scale_coef))
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_hold_time.setFont(font)
+
+        font = QtGui.QFont()
+        font.setPointSize(int(40 * scale_coef))
+        self.label_hold.setFont(font)
+
+        # members
+        font = QtGui.QFont()
+        font.setPointSize(int(55 * scale_coef))
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_member_1.setFont(font)
+        self.label_member_2.setFont(font)
+
+        # teams
+        font = QtGui.QFont()
+        font.setPointSize(int(25 * scale_coef))
+        self.label_team_1.setFont(font)
+        self.label_team_2.setFont(font)
+
+        self.label_team_1.setMinimumSize(QtCore.QSize(int(1000 * scale_coef), int(60 * scale_coef)))
+        self.label_team_1.setMaximumSize(QtCore.QSize(int(1000 * scale_coef), int(60 * scale_coef)))
+
+        self.label_team_2.setMinimumSize(QtCore.QSize(int(1000 * scale_coef), int(60 * scale_coef)))
+        self.label_team_2.setMaximumSize(QtCore.QSize(int(1000 * scale_coef), int(60 * scale_coef)))
+
+        # winer
+        font = QtGui.QFont()
+        font.setPointSize(int(45 * scale_coef))
+        self.label_winer_1.setFont(font)
+        self.label_winer_2.setFont(font)
+
+        # total score
+        font = QtGui.QFont()
+        font.setPointSize(int(150 * scale_coef))
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_score_1.setFont(font)
+        self.label_score_2.setFont(font)
+
+        # weight category
+        font = QtGui.QFont()
+        font.setPointSize(int(40 * scale_coef))
+        self.btn_weight_category_name_1.setFont(font)
+        self.btn_weight_category_name_2.setFont(font)
+
+        font = QtGui.QFont()
+        font.setPointSize(int(70 * scale_coef))
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_weight_category.setFont(font)
+
+        # cards
+        self.label_card_1_1.setMinimumSize(QtCore.QSize(int(125 * scale_coef), int(200 * scale_coef)))
+        self.label_card_1_1.setMaximumSize(QtCore.QSize(int(125 * scale_coef), int(200 * scale_coef)))
+
+        self.label_card_1_2.setMinimumSize(QtCore.QSize(int(125 * scale_coef), int(200 * scale_coef)))
+        self.label_card_1_2.setMaximumSize(QtCore.QSize(int(125 * scale_coef), int(200 * scale_coef)))
+
+        self.label_card_2_1.setMinimumSize(QtCore.QSize(int(125 * scale_coef), int(200 * scale_coef)))
+        self.label_card_2_1.setMaximumSize(QtCore.QSize(int(125 * scale_coef), int(200 * scale_coef)))
+
+        self.label_card_2_2.setMinimumSize(QtCore.QSize(int(125 * scale_coef), int(200 * scale_coef)))
+        self.label_card_2_2.setMaximumSize(QtCore.QSize(int(125 * scale_coef), int(200 * scale_coef)))
 
